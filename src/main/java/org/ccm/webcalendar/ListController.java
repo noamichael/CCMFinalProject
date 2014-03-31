@@ -1,4 +1,4 @@
-package org.ccm.webcaldendar;
+package org.ccm.webcalendar;
 
 /**
  *
