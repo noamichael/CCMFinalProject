@@ -1,24 +1,21 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package org.ccm.webcalendar.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
 /**
  *
- * @author Michael
+ * @author Michael Kucinski/Trevor Florio
  */
-public class Event implements Serializable {
+public class Event implements Serializable, Comparable {
     
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -26,13 +23,17 @@ public class Event implements Serializable {
     @Column(name="NAME")
     @NotNull
     private String name;
-    @Column(name="DESCRIPTION")
-    
+    @Column(name="DESCRIPTION")    
     private String description;
     @Column(name="STARTDATE")
+    @Temporal(value=TemporalType.DATE)
+    @NotNull
     private Date startDate;
+    @Temporal(value=TemporalType.DATE)
     @Column(name="ENDDATE")
     private Date endDate; 
+    @Column(name="PRIORITY")
+    private Priority priority;
 
     /**
      * @return the id
@@ -95,6 +96,72 @@ public class Event implements Serializable {
      */
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
+    }
+
+    /**
+     * @param id the id to set
+     */
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    /**
+     * @return the priority
+     */
+    public Priority getPriority() {
+        return priority;
+    }
+
+    /**
+     * @param priority the priority to set
+     */
+    public void setPriority(Priority priority) {
+        this.priority = priority;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        //TREVOR: We have to compare to the object coming in.
+        return 0;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 79 * hash + Objects.hashCode(this.id);
+        hash = 79 * hash + Objects.hashCode(this.startDate);
+        hash = 79 * hash + Objects.hashCode(this.endDate);
+        hash = 79 * hash + Objects.hashCode(this.priority);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Event other = (Event) obj;
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        if (!Objects.equals(this.name, other.name)) {
+            return false;
+        }
+        if (!Objects.equals(this.startDate, other.startDate)) {
+            return false;
+        }
+        if (this.priority != other.priority) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "Event{" + "id=" + id + ", name=" + name + ", description=" + description + ", startDate=" + startDate + ", endDate=" + endDate + ", priority=" + priority + '}';
     }
     
     
