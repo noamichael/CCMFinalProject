@@ -124,9 +124,20 @@ public class Event implements Serializable, Comparable {
 
     @Override
     public int compareTo(Object o) {
-
-    //TREVOR: We have to compare to the object coming in.
-        return 0;
+        
+        Event e = (Event)o;
+        
+        if(e.getPriority()==this.getPriority()){
+            return 0;
+        }
+        else if(e.getPriority()>this.getPriority()){
+            return -1;
+            
+        }
+        else{
+            return 1;
+        }
+        
     }
 
     @Override
