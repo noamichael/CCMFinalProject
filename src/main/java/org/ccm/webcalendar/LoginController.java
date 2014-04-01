@@ -1,8 +1,12 @@
 package org.ccm.webcalendar;
 
 import java.io.Serializable;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import org.ccm.webcalendar.entity.DatabaseService;
 import org.ccm.webcalendar.entity.User;
@@ -18,6 +22,11 @@ public class LoginController implements Serializable {
     private User currentUser;
     private boolean loggedIn;
 
+    public void test(){
+        //currentUser.setEvents();
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(""));
+    }
+    
     /**
      * @return the currentUser
      */
@@ -48,5 +57,21 @@ public class LoginController implements Serializable {
     @PostConstruct
     public void init(){
         this.currentUser = new User();
+    }
+    public String hashPass(String pass) {
+        byte[] bytes;
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA");
+            md.update(pass.getBytes());
+            bytes = md.digest();
+            String sb = "";
+            for (byte b : bytes) {
+                sb += Integer.toHexString((int) (b & 0xff));
+            }
+            pass = sb;
+        } catch (NoSuchAlgorithmException ex) {
+
+        }
+        return pass;
     }
 }

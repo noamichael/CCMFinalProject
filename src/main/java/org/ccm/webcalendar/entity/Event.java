@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -41,6 +43,9 @@ public class Event implements Serializable, Comparable {
     private Date endDate; 
     @Column(name="PRIORITY")
     private int priority = LOW;
+    @ManyToOne
+    @JoinColumn(name="USER_ID", nullable=false)
+    private User userId;
 
     /**
      * @return the id

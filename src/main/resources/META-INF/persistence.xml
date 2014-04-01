@@ -4,6 +4,7 @@
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <jta-data-source>jdbc/sample</jta-data-source>
     <class>org.ccm.webcalendar.entity.User</class>
+    <class>org.ccm.webcalendar.entity.Event</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.schema-generation.database.action" value="create"/>
