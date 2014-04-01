@@ -3,12 +3,16 @@ package org.ccm.webcalendar;
 import java.io.Serializable;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import org.ccm.webcalendar.entity.DatabaseService;
+import org.ccm.webcalendar.entity.Event;
 import org.ccm.webcalendar.entity.User;
 
 /**
@@ -17,16 +21,27 @@ import org.ccm.webcalendar.entity.User;
  */
 @SessionScoped
 public class LoginController implements Serializable {
+
     @Inject
     private DatabaseService service;
     private User currentUser;
     private boolean loggedIn;
 
-    public void test(){
-        //currentUser.setEvents();
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(""));
+    public void test() {
+        List<Event> list = new ArrayList();
+        Event x = new Event();
+        x.setStartDate(new Date());
+        list.add(x);
+        x = new Event();
+        x.setStartDate(new Date());
+        x = new Event();
+        x.setStartDate(new Date());
+        list.add(x);
+        currentUser.setEvents(list);
+        currentUser.sortByDate();
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(currentUser.getEvents().toString()));
     }
-    
+
     /**
      * @return the currentUser
      */
@@ -54,10 +69,12 @@ public class LoginController implements Serializable {
     public void setLoggedIn(boolean loggedIn) {
         this.loggedIn = loggedIn;
     }
+
     @PostConstruct
-    public void init(){
+    public void init() {
         this.currentUser = new User();
     }
+
     public String hashPass(String pass) {
         byte[] bytes;
         try {

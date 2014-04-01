@@ -83,7 +83,7 @@ public class User implements Serializable {
         this.id = id;
     }
     
-    private void sortByDate(){
+    public void sortByDate(){
         
         List<Event> out = new ArrayList<>();
         
