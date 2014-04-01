@@ -26,6 +26,7 @@ public class Event implements Serializable, Comparable {
     public static final int HIGH = 3;
     public static final int MEDIUM = 2;
     public static final int LOW = 1;
+
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
@@ -35,6 +36,7 @@ public class Event implements Serializable, Comparable {
     @Column(name="DESCRIPTION")    
     private String description;
     @Column(name="STARTDATE")
+    @NotNull
     @Temporal(value=TemporalType.DATE)
     private Date startDate;
     @Temporal(value=TemporalType.DATE)
@@ -43,6 +45,7 @@ public class Event implements Serializable, Comparable {
     @Column(name="PRIORITY")
     private int priority = LOW;
     @ManyToOne
+    @JoinColumn(name="OWNER_ID")
     private User userId;
 
     /**
@@ -131,6 +134,9 @@ public class Event implements Serializable, Comparable {
 
     @Override
     public int compareTo(Object o) {
+        if(o instanceof Event == false){
+            throw new RuntimeException(String.format("Object [%s] is not an event!", o.getClass()));
+        }
         
         Event e = (Event)o;
         
@@ -150,10 +156,10 @@ public class Event implements Serializable, Comparable {
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 79 * hash + Objects.hashCode(this.id);
-        hash = 79 * hash + Objects.hashCode(this.startDate);
-        hash = 79 * hash + Objects.hashCode(this.endDate);
-        hash = 79 * hash + Objects.hashCode(this.priority);
+        hash = 79 * hash + Objects.hashCode(this.getId());
+        hash = 79 * hash + Objects.hashCode(this.getStartDate());
+        hash = 79 * hash + Objects.hashCode(this.getEndDate());
+        hash = 79 * hash + Objects.hashCode(this.getPriority());
         return hash;
     }
 
@@ -175,7 +181,7 @@ public class Event implements Serializable, Comparable {
         if (!Objects.equals(this.startDate, other.startDate)) {
             return false;
         }
-        if (this.priority != other.priority) {
+        if (this.getPriority() != other.getPriority()) {
             return false;
         }
         return true;
@@ -185,7 +191,21 @@ public class Event implements Serializable, Comparable {
 
     @Override
     public String toString() {
-        return "Event{" + "id=" + id + ", name=" + name + ", description=" + description + ", startDate=" + startDate + ", endDate=" + endDate + ", priority=" + priority + '}';
+        return "Event{" + "id=" + getId() + ", name=" + getName() + ", description=" + getDescription() + ", startDate=" + getStartDate() + ", endDate=" + getEndDate() + ", priority=" + getPriority() + '}';
+    }
+
+    /**
+     * @return the userId
+     */
+    public User getUserId() {
+        return userId;
+    }
+
+    /**
+     * @param userId the userId to set
+     */
+    public void setUserId(User userId) {
+        this.userId = userId;
     }
     
     

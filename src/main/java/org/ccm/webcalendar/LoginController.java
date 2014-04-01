@@ -47,27 +47,34 @@ public class LoginController implements Serializable {
     public void addEvents() {
         Event test1 = new Event();
         test1.setName("Party");
-        test1.setPriority(1);
+        test1.setPriority(Event.LOW);
         test1.setStartDate(new Date());
         test1.setDescription("STUFF!");
         Event test2 = new Event();
         test2.setName("School");
-        test2.setPriority(2);
+        test2.setPriority(Event.HIGH);
         test2.setStartDate(new Date());
         test2.setDescription("STUFF!!");
         Event test3 = new Event();
-        test2.setName("Work");
-        test2.setPriority(3);
-        test2.setStartDate(new Date());
-        test2.setDescription("STUFF!!!");
+        test3.setName("Work");
+        test3.setPriority(Event.MEDIUM);
+        test3.setStartDate(new Date());
+        test3.setDescription("STUFF!!!");
         List<Event> list = new ArrayList();
         list.add(test1);
         list.add(test2); 
         list.add(test3);
         currentUser.setEvents(list);
-        currentUser.setUsername("Michael");
+        currentUser.setUsername("John");
         currentUser.setPassword("demo");
         service.addUser(currentUser);
+        currentUser = service.findUserByUsername("John");
+        String s = "";
+        for(Event e: currentUser.getEvents()){
+            s += String.format("Name [%s], description [%s], startDate [%s] .", e.getName(), e.getDescription(), e.getStartDate());
+        }
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(s));
+        
     }
 
     /**

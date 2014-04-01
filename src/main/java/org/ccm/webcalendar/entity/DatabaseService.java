@@ -19,6 +19,12 @@ public class DatabaseService {
         Query q = em.createQuery("SELECT U FROM User U");
         return q.getResultList();
     }
+    public User findUserByUsername(String username){
+        Query q = em.createQuery("SELECT U from User U WHERE U.username = :username", User.class);
+        q.setParameter("username", username);
+        List<User> result = q.getResultList();
+        return result.isEmpty() ? null : result.get(0);
+    }
     public void addUser(User user){
         em.persist(user);
     }

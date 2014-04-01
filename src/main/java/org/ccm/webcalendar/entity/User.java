@@ -25,10 +25,11 @@ public class User implements Serializable {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
-    @Column(name="USERNAME")
+    @Column(name="USERNAME",unique=true)
     @NotNull
     private String username;
     @Column(name="PASSWORD")
+    @NotNull
     private String password;
     @OneToMany(mappedBy="userId", cascade = CascadeType.ALL)
     private List<Event> events;
