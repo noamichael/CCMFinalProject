@@ -127,10 +127,10 @@ public class Event implements Serializable, Comparable {
         
         Event e = (Event)o;
         
-        if(e.getPriority()==this.getPriority()){
+        if(e.getStartDate().equals(this.getStartDate())){
             return 0;
         }
-        else if(e.getPriority()>this.getPriority()){
+        else if(e.getStartDate().before(this.getStartDate())){
             return -1;
             
         }
@@ -173,6 +173,8 @@ public class Event implements Serializable, Comparable {
         }
         return true;
     }
+    
+    
 
     @Override
     public String toString() {
