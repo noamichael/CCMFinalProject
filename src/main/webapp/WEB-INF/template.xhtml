@@ -136,7 +136,9 @@
                     </ui:insert>
                 </ui:fragment>                
             </p:layoutUnit>  
-            <ui:insert name="west"></ui:insert><!--Side menu gets inserted here.-->
+            <p:layoutUnit position="west" size="300" id="west">  
+                <ui:insert name="west"></ui:insert>
+            </p:layoutUnit> 
         </p:layout>
     </h:body>
 </html>
