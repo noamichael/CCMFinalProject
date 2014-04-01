@@ -17,6 +17,9 @@ import javax.validation.constraints.NotNull;
  */
 public class Event implements Serializable, Comparable {
     
+    private static final int HIGH = 3;
+    private static final int MEDIUM = 2;
+    private static final int LOW = 1;
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
@@ -33,7 +36,7 @@ public class Event implements Serializable, Comparable {
     @Column(name="ENDDATE")
     private Date endDate; 
     @Column(name="PRIORITY")
-    private Priority priority;
+    private int priority = LOW;
 
     /**
      * @return the id
@@ -108,20 +111,21 @@ public class Event implements Serializable, Comparable {
     /**
      * @return the priority
      */
-    public Priority getPriority() {
+    public int getPriority() {
         return priority;
     }
 
     /**
      * @param priority the priority to set
      */
-    public void setPriority(Priority priority) {
+    public void setPriority(int priority) {
         this.priority = priority;
     }
 
     @Override
     public int compareTo(Object o) {
-        //TREVOR: We have to compare to the object coming in.
+
+    //TREVOR: We have to compare to the object coming in.
         return 0;
     }
 
