@@ -3,6 +3,7 @@ package org.ccm.webcalendar.entity;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CascadeType;
 import static javax.persistence.CascadeType.ALL;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -28,9 +29,8 @@ public class User implements Serializable {
     @NotNull
     private String username;
     @Column(name="PASSWORD")
-    @NotNull
     private String password;
-    @OneToMany(mappedBy="userId")
+    @OneToMany(mappedBy="userId", cascade = CascadeType.ALL)
     private List<Event> events;
 
     /**

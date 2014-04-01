@@ -23,9 +23,9 @@ import javax.validation.constraints.NotNull;
 @Table(name="EVENT")
 public class Event implements Serializable, Comparable {
     
-    private static final int HIGH = 3;
-    private static final int MEDIUM = 2;
-    private static final int LOW = 1;
+    public static final int HIGH = 3;
+    public static final int MEDIUM = 2;
+    public static final int LOW = 1;
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
@@ -36,7 +36,6 @@ public class Event implements Serializable, Comparable {
     private String description;
     @Column(name="STARTDATE")
     @Temporal(value=TemporalType.DATE)
-    @NotNull
     private Date startDate;
     @Temporal(value=TemporalType.DATE)
     @Column(name="ENDDATE")

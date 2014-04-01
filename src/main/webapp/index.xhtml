@@ -16,6 +16,9 @@
                 <h:form>
                     <h:commandButton action="#{loginController.test()}" value="Test Sort!"/>
                 </h:form>
+                <h:form>
+                    <h:commandButton action="#{loginController.addEvents()}" value="Test Persist!"/>
+                </h:form>
             </p:tab>
             <p:tab title="Calendar">
                 <p:schedule/>
@@ -37,7 +40,7 @@
             <h:outputLabel value="Description"/>
             <h:inputTextarea/>
         </h:form>
-        
+
     </ui:define>
 </ui:composition>
 

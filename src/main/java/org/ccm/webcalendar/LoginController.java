@@ -62,9 +62,11 @@ public class LoginController implements Serializable {
         test2.setDescription("STUFF!!!");
         List<Event> list = new ArrayList();
         list.add(test1);
-        list.add(test2);
+        list.add(test2); 
         list.add(test3);
         currentUser.setEvents(list);
+        currentUser.setUsername("Michael");
+        currentUser.setPassword("demo");
         service.addUser(currentUser);
     }
 
