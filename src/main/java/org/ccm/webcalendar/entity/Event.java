@@ -44,7 +44,6 @@ public class Event implements Serializable, Comparable {
     @Column(name="PRIORITY")
     private int priority = LOW;
     @ManyToOne
-    @JoinColumn(name="USER_ID", nullable=false)
     private User userId;
 
     /**

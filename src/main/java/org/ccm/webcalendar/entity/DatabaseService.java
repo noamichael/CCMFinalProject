@@ -19,4 +19,7 @@ public class DatabaseService {
         Query q = em.createQuery("SELECT U FROM User U");
         return q.getResultList();
     }
+    public void addUser(User user){
+        em.persist(user);
+    }
 }

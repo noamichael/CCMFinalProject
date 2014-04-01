@@ -30,7 +30,7 @@ public class User implements Serializable {
     @Column(name="PASSWORD")
     @NotNull
     private String password;
-    @OneToMany(cascade=ALL)
+    @OneToMany(mappedBy="userId")
     private List<Event> events;
 
     /**
