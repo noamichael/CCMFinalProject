@@ -10,6 +10,14 @@
     <ui:define name="title">Home</ui:define>
     <ui:define name="header">Home</ui:define>
     <ui:define name="center"> 
+        <p:tabView>
+            <p:tab title="List">
+                LIST GOES HERE
+            </p:tab>
+            <p:tab title="Calendar">
+                <p:schedule/>
+            </p:tab>
+        </p:tabView>
         <h:form>
             <p:themeSwitcher style="width:165px" effect="fade" id="update_theme">  
                 <f:selectItem itemLabel="Choose Theme" itemValue="home" />  
