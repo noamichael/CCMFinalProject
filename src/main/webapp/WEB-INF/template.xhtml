@@ -1,0 +1,142 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <h:outputStylesheet name="./css/default.css"/>
+        <h:outputStylesheet name="./css/cssLayout.css"/>
+        <title><ui:insert name="title">Template</ui:insert></title>
+        <style type="text/css">
+            .ui-layout-north {
+                z-index:20 !important;
+                overflow:visible !important;;
+            }
+
+            .ui-layout-north .ui-layout-unit-content {
+                overflow:visible !important;
+                padding: 0px;
+            }
+            .ui-widget-content {
+                //color: #2C4359;                
+                //border: 0px;
+            }
+            .layout-north {
+                padding: 0px;
+            }
+            .layout-south, .layout-south div {
+                //background-color: #4f4f4f;
+                //color: white;
+                border-radius: 0px;
+                padding: 5px;
+            }
+            body {
+                margin:0px;
+                padding: 0px
+            }
+            .ui-menubar .ui-menuitem-link {
+                font-size: 12px;
+            }
+            .ui-menubar h3 {
+                font-size: 12px;
+
+            }
+            a:link {text-decoration: none;}     
+            a:visited {text-decoration: none;}  
+            a:hover {color:#0066cc;}  
+            .activeLink{
+                color:#0066cc!important;
+            }
+
+        </style>
+    </h:head>
+
+    <h:body>        
+        <p:layout fullPage="true" >  
+            <p:layoutUnit position="north" size="50" rendered="true" styleClass="layout-north" style="border: 0px"> 
+                <ui:insert name="north">
+                    <h:form id="mainMenuForm">
+                        <p:growl id="messages"/> 
+                        <p:megaMenu id="mainMenu" style="background-color:#c9c9c9" >  
+
+                            <p:menuitem url="/index.xhtml"  value="Dashboard" icon="ui-icon-home" />  
+
+                            <p:menuitem url="/search.xhtml"  value="Search" icon="ui-icon-search" />  
+
+                            <p:submenu label="Settings" icon="ui-icon-gear">  
+                                <p:column>  
+                                    <p:submenu label="Maintenance">  
+                                        <p:menuitem value="Commission Plans" url="#" />  
+                                        <p:menuitem value="Company" url="#" />  
+                                        <p:menuitem value="Entity" url="#" />  
+                                        <p:menuitem value="Forms" url="#" />  
+                                        <p:menuitem value="Users/Groups" url="/admin/manageUsers.xhtml" rendered="#{authorizationChecker.hasPermission('CREATE_USER')}"/>  
+                                        <p:menuitem value="Rates" url="#" />  
+                                        <p:menuitem value="Reinsurance Treaties" url="#" />  
+                                        <p:menuitem value="Standard Remarks" url="#" />  
+                                        <p:menuitem value="Team Definitions" url="#" />                                        
+                                    </p:submenu>  
+                                </p:column>  
+                                <p:column>
+                                    <p:submenu label="Import">  
+                                        <p:menuitem value="Claims" url="#" />  
+                                        <p:menuitem value="Accounting" url="#" />  
+                                        <p:menuitem value="Policy" url="#" />  
+                                    </p:submenu>  
+                                    <p:submenu label="Export">  
+                                        <p:menuitem value="Settings.3.1" url="#" />  
+                                        <p:menuitem value="Settings.3.2" url="#" />  
+                                    </p:submenu>  
+                                    <p:submenu label="Account">
+                                        <p:menuitem value="Personal Preferences" url="/preferences.xhtml"/>
+                                    </p:submenu>
+                                </p:column> 
+                            </p:submenu>  
+                            <f:facet name="options">  
+                                Logged in as: [NAME]
+                                <p:spacer width="20"/>
+                                <p:commandButton type="submit" ajax="false" value="Logout" icon="ui-icon-extlink" />  
+                            </f:facet>  
+                        </p:megaMenu>  
+                    </h:form>
+                </ui:insert>
+            </p:layoutUnit>  
+            <p:layoutUnit id="layout-south" position="south" size="30" styleClass="layout-south" style="border: 0px">  
+                Michael and Trevor &copy;2014.                
+            </p:layoutUnit>  
+            <p:layoutUnit position="center" style="border: 0px"> 
+                <ui:fragment id="main-content" rendered="true">
+                    <p:panel>
+                        <f:facet name="header">
+                            <ui:insert name="header"/>
+                        </f:facet>
+                        <ui:insert name="center">Content</ui:insert>
+                    </p:panel>
+                </ui:fragment>                
+                <ui:fragment id="login-content" rendered="false">
+                    <ui:insert name="center-login">
+                        <h:form>
+                            <p:panel header="Login">  
+                                <center>
+                                    <h:panelGrid>
+                                        <h:outputLabel for="name" value="Username" styleClass="loginLabel"/>
+                                        <h:inputText id="name"/>
+                                        <h:outputLabel for="password" value="Password" styleClass="loginLabel"/>
+                                        <h:inputSecret id="password" redisplay="true"/>
+                                        <h:commandButton value="Login"/>
+                                    </h:panelGrid>
+                                    <p:messages id="messages" autoUpdate="true" closable="true"/> 
+                                </center>
+                            </p:panel>  
+                        </h:form>
+                    </ui:insert>
+                </ui:fragment>                
+            </p:layoutUnit>  
+            <ui:insert name="west"></ui:insert><!--Side menu gets inserted here.-->
+        </p:layout>
+    </h:body>
+</html>
