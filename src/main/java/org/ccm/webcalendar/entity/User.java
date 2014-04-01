@@ -1,6 +1,7 @@
 package org.ccm.webcalendar.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import static javax.persistence.CascadeType.ALL;
 import javax.persistence.Column;
@@ -80,6 +81,25 @@ public class User implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+    
+    private void sortByDate(){
+        
+        List<Event> out = new ArrayList<>();
+        
+        for(int i=0;i<events.size();i++){
+            
+            Event soonest =events.get(0);
+            for(int j=0;j<events.size();j++){
+                if(events.get(i).getStartDate().before(soonest.getStartDate())){
+                    soonest=events.get(i);
+                }
+            }
+            out.add(soonest);
+            
+        }
+        events=out;
+        
     }
     
     
