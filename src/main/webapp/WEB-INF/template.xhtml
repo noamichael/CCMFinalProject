@@ -58,50 +58,20 @@
     </h:head>
 
     <h:body>        
+        <p:growl id="messages" autoUpdate="true"/> 
         <p:layout fullPage="true" >  
-            <p:layoutUnit position="north" size="50" rendered="true" styleClass="layout-north" style="border: 0px"> 
+            <p:layoutUnit position="north" size="50" rendered="#{loginController.loggedIn}" styleClass="layout-north" style="border: 0px"> 
                 <ui:insert name="north">
                     <h:form id="mainMenuForm">
-                        <p:growl id="messages"/> 
                         <p:megaMenu id="mainMenu" style="background-color:#c9c9c9" >  
 
                             <p:menuitem url="/index.xhtml"  value="Dashboard" icon="ui-icon-home" />  
 
                             <p:menuitem url="/search.xhtml"  value="Search" icon="ui-icon-search" />  
-
-                            <p:submenu label="Settings" icon="ui-icon-gear">  
-                                <p:column>  
-                                    <p:submenu label="Maintenance">  
-                                        <p:menuitem value="Commission Plans" url="#" />  
-                                        <p:menuitem value="Company" url="#" />  
-                                        <p:menuitem value="Entity" url="#" />  
-                                        <p:menuitem value="Forms" url="#" />  
-                                        <p:menuitem value="Users/Groups" url="/admin/manageUsers.xhtml" rendered="#{authorizationChecker.hasPermission('CREATE_USER')}"/>  
-                                        <p:menuitem value="Rates" url="#" />  
-                                        <p:menuitem value="Reinsurance Treaties" url="#" />  
-                                        <p:menuitem value="Standard Remarks" url="#" />  
-                                        <p:menuitem value="Team Definitions" url="#" />                                        
-                                    </p:submenu>  
-                                </p:column>  
-                                <p:column>
-                                    <p:submenu label="Import">  
-                                        <p:menuitem value="Claims" url="#" />  
-                                        <p:menuitem value="Accounting" url="#" />  
-                                        <p:menuitem value="Policy" url="#" />  
-                                    </p:submenu>  
-                                    <p:submenu label="Export">  
-                                        <p:menuitem value="Settings.3.1" url="#" />  
-                                        <p:menuitem value="Settings.3.2" url="#" />  
-                                    </p:submenu>  
-                                    <p:submenu label="Account">
-                                        <p:menuitem value="Personal Preferences" url="/preferences.xhtml"/>
-                                    </p:submenu>
-                                </p:column> 
-                            </p:submenu>  
                             <f:facet name="options">  
-                                Logged in as: [NAME]
+                                Logged in as: #{loginController.currentUser.username}
                                 <p:spacer width="20"/>
-                                <p:commandButton type="submit" ajax="false" value="Logout" icon="ui-icon-extlink" />  
+                                <p:commandButton type="submit" action="#{loginController.logout()}" ajax="false" value="Logout" icon="ui-icon-extlink" />  
                             </f:facet>  
                         </p:megaMenu>  
                     </h:form>
@@ -111,7 +81,7 @@
                 Michael and Trevor &copy;2014.                
             </p:layoutUnit>  
             <p:layoutUnit position="center" style="border: 0px"> 
-                <ui:fragment id="main-content" rendered="true">
+                <ui:fragment id="main-content" rendered="#{loginController.loggedIn}">
                     <p:panel>
                         <f:facet name="header">
                             <ui:insert name="header"/>
@@ -119,26 +89,56 @@
                         <ui:insert name="center">Content</ui:insert>
                     </p:panel>
                 </ui:fragment>                
-                <ui:fragment id="login-content" rendered="false">
-                    <ui:insert name="center-login">
-                        <h:form>
-                            <p:panel header="Login">  
-                                <center>
-                                    <h:panelGrid>
-                                        <h:outputLabel for="name" value="Username" styleClass="loginLabel"/>
-                                        <h:inputText id="name"/>
-                                        <h:outputLabel for="password" value="Password" styleClass="loginLabel"/>
-                                        <h:inputSecret id="password" redisplay="true"/>
-                                        <h:commandButton value="Login"/>
-                                    </h:panelGrid>
-                                    <p:messages id="messages" autoUpdate="true" closable="true"/> 
-                                </center>
-                            </p:panel>  
-                        </h:form>
-                    </ui:insert>
+                <ui:fragment id="login-content" rendered="#{!loginController.loggedIn}">
+                    <p:panel header="Login">  
+                        <center>
+                            <h:panelGrid columns="3"> 
+                                <h:form style="float:left">
+                                    <h:outputLabel value="Login"/>
+                                    <p:panel>
+                                        <h:panelGrid>
+                                            <h:outputLabel for="name" value="Username" styleClass="loginLabel"/>
+                                            <h:inputText id="name" value="#{loginController.currentUser.username}" required="true" requiredMessage="Please enter a username.">
+                                                <f:validator validatorId="loginValidator"/>
+                                                <f:attribute name="pass" value="#{pass}"/>
+                                            </h:inputText>
+                                            <p:message for="name"/>
+                                            <h:outputLabel for="password" value="Password" styleClass="loginLabel"/>
+                                            <h:inputSecret id="password" binding="#{pass}" value="#{loginController.currentUser.password}" required="true" requiredMessage="Please enter a password."/>
+                                            <p:message for="password"/>
+                                            <h:commandButton value="Login" action="#{loginController.login()}"/>
+                                        </h:panelGrid>
+                                    </p:panel>
+                                </h:form>
+                                OR
+                                <h:form style="float:right">
+                                    <h:outputLabel value="Register"/>
+                                    <p:panel>
+                                        <h:panelGrid>
+                                            <h:outputLabel for="reg_name" value="Username" styleClass="loginLabel"/>
+                                            <h:inputText id="reg_name" value="#{loginController.newUser.username}" required="true" requiredMessage="Please enter a username.">
+                                                <f:validator validatorId="registrationValidator"/>
+                                                <f:attribute name="pass" value="#{regPass}"/>
+                                                <f:attribute name="conPass" value="#{regConPass}"/>
+                                            </h:inputText>
+                                            <p:message for="reg_name"/> 
+                                            <h:outputLabel for="reg_password" value="Password" styleClass="loginLabel"/>
+                                            <h:inputSecret id="reg_password" binding="#{regPass}" value="#{loginController.newUser.password}" required="true" requiredMessage="Please enter a password."/>
+                                            <p:message for="reg_password"/> 
+                                            <h:outputLabel for="reg_con_password" value="Confirm Password" styleClass="loginLabel"/>
+                                            <h:inputSecret id="reg_con_password" binding="#{regConPass}" required="true" requiredMessage="Please enter a confirmation password."/>
+                                            <p:message for="reg_con_password"/> 
+                                            <h:commandButton value="Register" action="#{loginController.register()}"/>
+                                        </h:panelGrid>
+
+                                    </p:panel>
+                                </h:form>
+                            </h:panelGrid>
+                        </center>
+                    </p:panel>
                 </ui:fragment>                
             </p:layoutUnit>  
-            <p:layoutUnit position="west" size="300" id="west">  
+            <p:layoutUnit position="west" size="300" id="west" rendered="#{loginController.loggedIn}">  
                 <ui:insert name="west"></ui:insert>
             </p:layoutUnit> 
         </p:layout>

@@ -3,8 +3,6 @@ package org.ccm.webcalendar;
 import java.io.Serializable;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
@@ -27,54 +25,37 @@ public class LoginController implements Serializable {
     @Inject
     private DatabaseService service;
     private User currentUser;
+    private User newUser;
     private boolean loggedIn;
+    private Event newEvent;
 
-    public void test() {
-        List<Event> list = new ArrayList();
-        Event x = new Event();
-        x.setStartDate(new Date());
-        list.add(x);
-        x = new Event();
-        x.setStartDate(new Date());
-        x = new Event();
-        x.setStartDate(new Date());
-        list.add(x);
-        currentUser.setEvents(list);
-        currentUser.sortByDate();
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(currentUser.getEvents().toString()));
+    public void register() {
+        newUser.setPassword(hashPass(newUser.getPassword()));
+        getService().addUser(getNewUser());
+        newUser = new User();
+        addMessage("Account created! Feel free to login.");
     }
 
-    public void addEvents() {
-        Event test1 = new Event();
-        test1.setName("Party");
-        test1.setPriority(Event.LOW);
-        test1.setStartDate(new Date());
-        test1.setDescription("STUFF!");
-        Event test2 = new Event();
-        test2.setName("School");
-        test2.setPriority(Event.HIGH);
-        test2.setStartDate(new Date());
-        test2.setDescription("STUFF!!");
-        Event test3 = new Event();
-        test3.setName("Work");
-        test3.setPriority(Event.MEDIUM);
-        test3.setStartDate(new Date());
-        test3.setDescription("STUFF!!!");
-        List<Event> list = new ArrayList();
-        list.add(test1);
-        list.add(test2); 
-        list.add(test3);
-        currentUser.setEvents(list);
-        currentUser.setUsername("John");
-        currentUser.setPassword("demo");
-        service.addUser(currentUser);
-        currentUser = service.findUserByUsername("John");
-        String s = "";
-        for(Event e: currentUser.getEvents()){
-            s += String.format("Name [%s], description [%s], startDate [%s] .", e.getName(), e.getDescription(), e.getStartDate());
+    public void login() {
+        this.setLoggedIn(true);
+        this.setCurrentUser(getService().findUserByUsername(getCurrentUser().getUsername()));
+    }
+
+    public void logout() {
+        this.setLoggedIn(false);
+        this.setCurrentUser(new User());
+    }
+
+    public void addEvent() {
+        if (getCurrentUser().getUsername() != null) {
+            List<Event> allEvents = getCurrentUser().getEvents();
+            allEvents.add(getNewEvent());
+            addMessage("Event added!");
         }
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(s));
-        
+        else{
+            addMessage("The event could not be added.");
+        }
+
     }
 
     /**
@@ -107,7 +88,9 @@ public class LoginController implements Serializable {
 
     @PostConstruct
     public void init() {
-        this.currentUser = new User();
+        this.setCurrentUser(new User());
+        this.setNewEvent(new Event());
+        this.newUser = new User();
     }
 
     public String hashPass(String pass) {
@@ -125,5 +108,53 @@ public class LoginController implements Serializable {
 
         }
         return pass;
+    }
+
+    public void addMessage(String message) {
+        FacesMessage msg = new FacesMessage(message);
+        msg.setSeverity(FacesMessage.SEVERITY_INFO);
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+    }
+
+    /**
+     * @return the service
+     */
+    public DatabaseService getService() {
+        return service;
+    }
+
+    /**
+     * @param service the service to set
+     */
+    public void setService(DatabaseService service) {
+        this.service = service;
+    }
+
+    /**
+     * @return the newUser
+     */
+    public User getNewUser() {
+        return newUser;
+    }
+
+    /**
+     * @param newUser the newUser to set
+     */
+    public void setNewUser(User newUser) {
+        this.newUser = newUser;
+    }
+
+    /**
+     * @return the newEvent
+     */
+    public Event getNewEvent() {
+        return newEvent;
+    }
+
+    /**
+     * @param newEvent the newEvent to set
+     */
+    public void setNewEvent(Event newEvent) {
+        this.newEvent = newEvent;
     }
 }

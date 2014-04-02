@@ -28,4 +28,7 @@ public class DatabaseService {
     public void addUser(User user){
         em.persist(user);
     }
+    public void updateUser(User user){
+        
+    }
 }

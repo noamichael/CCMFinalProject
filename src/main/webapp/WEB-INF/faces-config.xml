@@ -136,4 +136,23 @@
             </map-entry> 
         </map-entries>
     </managed-bean>
+    <managed-bean>
+        <managed-bean-name>priority</managed-bean-name>
+        <managed-bean-class>java.util.TreeMap</managed-bean-class>
+        <managed-bean-scope>application</managed-bean-scope>
+        <map-entries>
+            <map-entry>
+                <key>High</key>
+                <value>3</value>  
+            </map-entry>
+            <map-entry>
+                <key>Medium</key>
+                <value>2</value>
+            </map-entry>  
+            <map-entry>
+                <key>Low</key>
+                <value>1</value> 
+            </map-entry> 
+        </map-entries>
+    </managed-bean>
 </faces-config>

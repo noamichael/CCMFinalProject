@@ -21,7 +21,7 @@ import javax.validation.constraints.NotNull;
  */
 @Entity
 @Table(name="EVENT")
-public class Event implements Serializable, Comparable {
+public class Event implements Comparable, Serializable {
     
     public static final int HIGH = 3;
     public static final int MEDIUM = 2;
