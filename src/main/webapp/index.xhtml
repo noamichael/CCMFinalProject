@@ -12,6 +12,9 @@
     <ui:define name="center"> 
         <p:tabView>
             <p:tab title="List">
+                <h:form>
+                    <h:commandButton value="Sort by Date" action="#{listController.sortByDate()}"/>
+                </h:form>
                 <p:dataTable var="event" value="#{listController.currentEvents}">
                     <f:facet name="header">
                         Current Events

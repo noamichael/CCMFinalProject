@@ -35,6 +35,10 @@ public class ListController implements Serializable {
             setUserEvents((List<Event>) new ArrayList());
         }
     }
+    public void sortByDate(){
+        loginController.getCurrentUser().sortByDate();
+        this.currentEvents.setWrappedData(getUserEvents());
+    }
 
     /**
      * @return the userEvents
