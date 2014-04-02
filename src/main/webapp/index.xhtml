@@ -15,7 +15,7 @@
                 LIST GOES HERE
             </p:tab>
             <p:tab title="Calendar">
-<!--                <p:schedule/>-->
+                <!--                <p:schedule/>-->
             </p:tab>
         </p:tabView>
         <h:form>
@@ -28,11 +28,33 @@
     </ui:define>
     <ui:define name="west">
         <h:form>
-            <h:outputLabel value="name"/>
-            <h:inputText/>
-            <br/>
-            <h:outputLabel value="Description"/>
-            <h:inputTextarea/>
+            <p:panel header="Create an event.">
+                <h:panelGrid>
+                    <h:outputLabel value="Name"/>
+                    <h:inputText value="#{loginController.newEvent.name}"/>
+                    <br/>
+                    <h:outputLabel value="Description"/>
+                    <h:inputTextarea value="#{loginController.newEvent.description}"/>
+
+                    <h:outputLabel value="Start Time"/>
+                    <p:calendar value="#{loginController.newEvent.startDate}" pattern="MM/dd/yyyy HH:mm"/>
+
+                    <h:outputLabel value="End Time"/>
+                    <p:calendar value="#{loginController.newEvent.endDate}" pattern="MM/dd/yyyy HH:mm"/>
+
+                    <h:outputLabel value="Priority"/>
+                    <h:selectOneMenu value="#{loginController.newEvent.priority}">
+                        <f:selectItem itemLabel="High" itemValue="3"/>
+                        <f:selectItem itemLabel="Medium" itemValue="2"/>
+                        <f:selectItem itemLabel="Low" itemValue="1"/>
+                    </h:selectOneMenu>
+                    
+                    <h:commandButton action="#{loginController.addEvent()}" value="Add Event"/>
+
+
+
+                </h:panelGrid>
+            </p:panel>
         </h:form>
 
     </ui:define>

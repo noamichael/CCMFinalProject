@@ -49,7 +49,13 @@ public class LoginController implements Serializable {
     public void addEvent() {
         if (getCurrentUser().getUsername() != null) {
             List<Event> allEvents = getCurrentUser().getEvents();
+            
+            newEvent.setUserId(currentUser);
             allEvents.add(getNewEvent());
+            
+            currentUser.setEvents(allEvents);
+            service.updateUser(currentUser);
+            newEvent = new Event();
             addMessage("Event added!");
         }
         else{

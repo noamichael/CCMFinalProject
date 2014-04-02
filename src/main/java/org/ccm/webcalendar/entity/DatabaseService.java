@@ -29,6 +29,8 @@ public class DatabaseService {
         em.persist(user);
     }
     public void updateUser(User user){
-        
+        User oldUser = em.find(User.class, user.getId());
+        oldUser.updateUser(user);
+       
     }
 }

@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -29,9 +30,17 @@ public class User implements Serializable {
     @Column(name="PASSWORD")
     @NotNull
     private String password;
-    @OneToMany(mappedBy="userId", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy="userId", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Event> events;
 
+    public User(){}
+    
+    public void updateUser(User user){
+        this.events = user.events;
+        this.id = user.id;
+        this.password = user.password;
+        this.username = user.username;
+    }
     /**
      * @return the username
      */
