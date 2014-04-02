@@ -33,4 +33,7 @@ public class DatabaseService {
         oldUser.updateUser(user);
        
     }
+    public void removeUser(User user){
+        em.remove(user);
+    }
 }

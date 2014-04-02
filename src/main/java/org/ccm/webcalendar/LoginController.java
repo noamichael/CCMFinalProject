@@ -63,6 +63,18 @@ public class LoginController implements Serializable {
         }
 
     }
+    public void removeEvent(Event event){
+         if (getCurrentUser().getUsername() != null) {
+            List<Event> allEvents = getCurrentUser().getEvents();
+            allEvents.remove(event);
+            currentUser.setEvents(allEvents);
+            service.updateUser(currentUser);
+            addMessage("Event Removed!");
+        }
+        else{
+            addMessage("The event could not be removed.");
+        }
+    }
 
     /**
      * @return the currentUser

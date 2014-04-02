@@ -12,7 +12,29 @@
     <ui:define name="center"> 
         <p:tabView>
             <p:tab title="List">
-                LIST GOES HERE
+                <p:dataTable var="event" value="#{listController.currentEvents}">
+                    <f:facet name="header">
+                        Current Events
+                    </f:facet>
+                    <p:column>
+                        <f:facet name="header">
+                            Name
+                        </f:facet>  
+                        #{event.name}
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            Priority
+                        </f:facet>  
+                        #{event.priority}
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            Start Date
+                        </f:facet>  
+                        #{event.startDate}
+                    </p:column>
+                </p:dataTable> 
             </p:tab>
             <p:tab title="Calendar">
                 <!--                <p:schedule/>-->
@@ -48,7 +70,7 @@
                         <f:selectItem itemLabel="Medium" itemValue="2"/>
                         <f:selectItem itemLabel="Low" itemValue="1"/>
                     </h:selectOneMenu>
-                    
+
                     <h:commandButton action="#{loginController.addEvent()}" value="Add Event"/>
 
 
