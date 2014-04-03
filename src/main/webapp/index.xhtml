@@ -72,7 +72,9 @@
                 </p:dataTable> 
             </p:tab>
             <p:tab title="Calendar">
-                <!--                <p:schedule/>-->
+                <h:form>
+                    <p:schedule/>
+                </h:form>
             </p:tab>
         </p:tabView>
         <h:form>
@@ -99,7 +101,7 @@
 
                     <h:outputLabel value="Repeated event"/>
                     <p:selectBooleanCheckbox value="#{loginController.newEvent.repeated}">
-                        <p:ajax event="change" update="create_event"/>
+                        <p:ajax event="change" update="create_event" listener="#{loginController.repeatedListener()}"/>
                     </p:selectBooleanCheckbox>    
                     <h:outputLabel value="Days repeated" rendered="#{loginController.newEvent.repeated}"/>
 

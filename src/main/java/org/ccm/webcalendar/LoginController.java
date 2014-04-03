@@ -39,13 +39,21 @@ public class LoginController implements Serializable {
     public void login() {
         this.setLoggedIn(true);
         this.setCurrentUser(getService().findUserByUsername(getCurrentUser().getUsername()));
+        if(this.currentUser == null){
+            throw new RuntimeException("NULL USER!");
+        }
     }
 
     public void logout() {
         this.setLoggedIn(false);
         this.setCurrentUser(new User());
+        FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
     }
-
+    public void repeatedListener(){
+        if(!newEvent.isRepeated() && newEvent.getRepeatedDays() != null){
+            newEvent.getRepeatedDays().clear();
+        }
+    }
     public void addEvent() {
         if (getCurrentUser().getUsername() != null) {
             List<Event> allEvents = getCurrentUser().getEvents();
