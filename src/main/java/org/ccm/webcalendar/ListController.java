@@ -20,46 +20,33 @@ import org.ccm.webcalendar.entity.Event;
 public class ListController implements Serializable {
     @Inject
     private LoginController loginController;
+    private transient DataModel<Event> currentEvents;
     private List<Event> userEvents;
-    private DataModel<Event> currentEvents;
     
     public ListController(){}
     
     @PostConstruct
     public void init(){
+        userEvents = loginController.getCurrentUser().getEvents();
         currentEvents = new ListDataModel();
-        if(loginController.isLoggedIn()){
-            setUserEvents(loginController.getCurrentUser().getEvents());
-        }
-        else{
-            setUserEvents((List<Event>) new ArrayList());
-        }
     }
     public void sortByDate(){
         loginController.getCurrentUser().sortByDate();
-        this.currentEvents.setWrappedData(getUserEvents());
     }
 
     /**
      * @return the userEvents
      */
-    public List<Event> getUserEvents() {
+    public List<Event> updateEvents() {
 
         return loginController.getCurrentUser().getEvents();
-    }
-
-    /**
-     * @param userEvents the userEvents to set
-     */
-    public void setUserEvents(List<Event> userEvents) {
-        this.userEvents = userEvents;
     }
 
     /**
      * @return the currentEvents
      */
     public DataModel<Event> getCurrentEvents() {
-        currentEvents.setWrappedData(getUserEvents());
+        currentEvents = new ListDataModel(userEvents);
         return currentEvents;
     }
 
@@ -68,5 +55,19 @@ public class ListController implements Serializable {
      */
     public void setCurrentEvents(DataModel<Event> currentEvents) {
         this.currentEvents = currentEvents;
+    }
+
+    /**
+     * @return the userEvents
+     */
+    public List<Event> getUserEvents() {
+        return userEvents;
+    }
+
+    /**
+     * @param userEvents the userEvents to set
+     */
+    public void setUserEvents(List<Event> userEvents) {
+        this.userEvents = userEvents;
     }
 }

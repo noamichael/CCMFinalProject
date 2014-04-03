@@ -2,6 +2,8 @@ package org.ccm.webcalendar.entity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -13,34 +15,39 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import org.eclipse.persistence.annotations.PrivateOwned;
 
 /**
  *
  * @author Trevor Florio
  */
 @Entity
-@Table(name="USER_TABLE")
+@Table(name = "USER_TABLE")
 public class User implements Serializable {
+
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name="USERNAME",unique=true)
+    @Column(name = "USERNAME", unique = true)
     @NotNull
     private String username;
-    @Column(name="PASSWORD")
+    @Column(name = "PASSWORD")
     @NotNull
     private String password;
-    @OneToMany(mappedBy="userId", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @PrivateOwned
     private List<Event> events;
 
-    public User(){}
-    
-    public void updateUser(User user){
+    public User() {
+    }
+
+    public void updateUser(User user) {
         this.events = user.events;
         this.id = user.id;
         this.password = user.password;
         this.username = user.username;
     }
+
     /**
      * @return the username
      */
@@ -90,25 +97,8 @@ public class User implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
-    
-    public void sortByDate(){
-        
-        List<Event> out = new ArrayList<>();
-        
-        for(int i=0;i<events.size();i++){
-            
-            Event soonest =events.get(0);
-            for(int j=0;j<events.size();j++){
-                if(events.get(i).getStartDate().before(soonest.getStartDate())){
-                    soonest=events.get(i);
-                }
-            }
-            out.add(soonest);
-            
-        }
-        events=out;
-        
+
+    public void sortByDate() {
+        Collections.sort(events);//temporary sort
     }
-    
-    
 }

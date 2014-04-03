@@ -15,16 +15,28 @@
                 <h:form>
                     <h:commandButton value="Sort by Date" action="#{listController.sortByDate()}"/>
                 </h:form>
-                <p:dataTable var="event" value="#{listController.currentEvents}">
+                <p:dataTable var="event" value="#{listController.currentEvents}" id="table">
                     <f:facet name="header">
                         Current Events
                     </f:facet>
                     <p:column>
                         <f:facet name="header">
-                            Name
+                            Event Name
                         </f:facet>  
                         #{event.name}
                     </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            Location
+                        </f:facet>  
+                        #{event.location}
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            Description
+                        </f:facet>  
+                        #{event.description}
+                    </p:column>  
                     <p:column>
                         <f:facet name="header">
                             Priority
@@ -36,6 +48,20 @@
                             Start Date
                         </f:facet>  
                         #{event.startDate}
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            End Date
+                        </f:facet>  
+                        #{event.endDate}
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            Delete
+                        </f:facet>  
+                        <h:form>
+                            <h:commandButton actionListener="#{loginController.removeEvent(event)}" value="Delete"/>
+                        </h:form>
                     </p:column>
                 </p:dataTable> 
             </p:tab>
@@ -54,18 +80,26 @@
     <ui:define name="west">
         <h:form>
             <p:panel header="Create an event.">
-                <h:panelGrid>
-                    <h:outputLabel value="Name"/>
-                    <h:inputText value="#{loginController.newEvent.name}"/>
+                <h:panelGrid id="create_event">
+                    <h:outputLabel value="Event Name"/>
+                    <h:inputText value="#{loginController.newEvent.name}" required="true" requiredMessage="Please enter an event name."/>
                     <br/>
                     <h:outputLabel value="Description"/>
-                    <h:inputTextarea value="#{loginController.newEvent.description}"/>
+                    <h:inputTextarea value="#{loginController.newEvent.description}" required="true" requiredMessage="Please enter a description."/>
 
+                    <h:outputLabel value="Location"/>
+                    <h:inputText value="#{loginController.newEvent.location}" required="true" requiredMessage="Please enter a location."/>
+                    
+                    <p:selectBooleanCheckbox value="#{loginController.repeat}">
+                        <p:ajax event="change" update="create_event"/>
+                    </p:selectBooleanCheckbox>
+                    
                     <h:outputLabel value="Start Time"/>
-                    <p:calendar value="#{loginController.newEvent.startDate}" pattern="MM/dd/yyyy HH:mm"/>
+                    <p:calendar value="#{loginController.newEvent.startDate}" id="test" pattern="MM/dd/yyyy hh:mm a" rendered="#{!loginController.repeat}" disabled="#{loginController.repeat}" required="true" requiredMessage="Please enter a start date."/>
 
                     <h:outputLabel value="End Time"/>
-                    <p:calendar value="#{loginController.newEvent.endDate}" pattern="MM/dd/yyyy HH:mm"/>
+                    <p:calendar value="#{loginController.newEvent.endDate}" pattern="MM/dd/yyyy hh:mm a"/>
+                    
 
                     <h:outputLabel value="Priority"/>
                     <h:selectOneMenu value="#{loginController.newEvent.priority}">

@@ -1,0 +1,43 @@
+            .ui-layout-north {
+                z-index:20 !important;
+                overflow:visible !important;;
+            }
+
+            .ui-layout-north .ui-layout-unit-content {
+                overflow:visible !important;
+                padding: 0px;
+            }
+            .ui-widget-content {
+                //color: #2C4359;                
+                //border: 0px;
+            }
+            .layout-north {
+                padding: 0px;
+            }
+            .layout-south, .layout-south div {
+                //background-color: #4f4f4f;
+                //color: white;
+                border-radius: 0px;
+                padding: 5px;
+            }
+            body {
+                margin:0px;
+                padding: 0px
+            }
+            .ui-menubar .ui-menuitem-link {
+                font-size: 12px;
+            }
+            .ui-menubar h3 {
+                font-size: 12px;
+
+            }
+            .ui-widget,.ui-widget .ui-widget {
+                font-size: 90% !important;
+            }
+
+            a:link {text-decoration: none;}     
+            a:visited {text-decoration: none;}  
+            a:hover {color:#0066cc;}  
+            .activeLink{
+                color:#0066cc!important;
+            }

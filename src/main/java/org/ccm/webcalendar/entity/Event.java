@@ -42,6 +42,12 @@ public class Event implements Comparable, Serializable {
     @Temporal(value=TemporalType.DATE)
     @Column(name="ENDDATE")
     private Date endDate; 
+    @Column(name="REPEATED")
+    private boolean repeated;
+    @Column(name="REPEATED_DAYS")
+    private Boolean[] repeatedDays = new Boolean[7];
+    @Column(name="LOCATION")
+    private String location;
     @Column(name="PRIORITY")
     private int priority = LOW;
     @ManyToOne
@@ -186,13 +192,13 @@ public class Event implements Comparable, Serializable {
         }
         return true;
     }
-    
-    
 
     @Override
     public String toString() {
-        return "Event{" + "id=" + getId() + ", name=" + getName() + ", description=" + getDescription() + ", startDate=" + getStartDate() + ", endDate=" + getEndDate() + ", priority=" + getPriority() + '}';
+        return "Event{" + "id=" + id + ", name=" + name + ", description=" + description + ", startDate=" + startDate + ", endDate=" + endDate + ", location=" + location + ", priority=" + priority + ", userId=" + userId + '}';
     }
+    
+
 
     /**
      * @return the userId
@@ -207,6 +213,50 @@ public class Event implements Comparable, Serializable {
     public void setUserId(User userId) {
         this.userId = userId;
     }
+
+    /**
+     * @return the location
+     */
+    public String getLocation() {
+        return location;
+    }
+
+    /**
+     * @param location the location to set
+     */
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    /**
+     * @return the repeated
+     */
+    public boolean isRepeated() {
+        return repeated;
+    }
+
+    /**
+     * @param repeated the repeated to set
+     */
+    public void setRepeated(boolean repeated) {
+        this.repeated = repeated;
+    }
+
+    /**
+     * @return the repeatedDays
+     */
+    public Boolean[] getRepeatedDays() {
+        return repeatedDays;
+    }
+
+    /**
+     * @param repeatedDays the repeatedDays to set
+     */
+    public void setRepeatedDays(Boolean[] repeatedDays) {
+        this.repeatedDays = repeatedDays;
+    }
+
+
     
     
     
