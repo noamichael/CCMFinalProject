@@ -260,5 +260,8 @@ public class Event implements Comparable, Serializable {
     public void setRepeatedDays(List<String> repeatedDays) {
         this.repeatedDays = repeatedDays;
     }
+    public boolean isEveryDay(){
+        return repeatedDays == null ? false: repeatedDays.contains("ALL");
+    }
   
 }

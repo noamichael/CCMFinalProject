@@ -102,7 +102,12 @@
                         <p:ajax event="change" update="create_event"/>
                     </p:selectBooleanCheckbox>    
                     <h:outputLabel value="Days repeated" rendered="#{loginController.newEvent.repeated}"/>
+
                     <p:selectManyCheckbox id="lineDirection" value="#{loginController.newEvent.repeatedDays}" layout="grid" columns="3"  rendered="#{loginController.newEvent.repeated}">  
+                        <p:ajax event="change" update="create_event"/>
+                        <f:selectItem itemLabel="Everyday" itemValue="ALL" />  
+                    </p:selectManyCheckbox>  
+                    <p:selectManyCheckbox value="#{loginController.newEvent.repeatedDays}" layout="grid" columns="3"  rendered="#{loginController.newEvent.repeated and !loginController.newEvent.everyDay}">  
                         <f:selectItem itemLabel="Monday" itemValue="MON" />  
                         <f:selectItem itemLabel="Tuseday" itemValue="TUE" />  
                         <f:selectItem itemLabel="Wednesday" itemValue="WED" />
