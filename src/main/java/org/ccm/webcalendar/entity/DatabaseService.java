@@ -20,8 +20,9 @@ public class DatabaseService {
         return q.getResultList();
     }
     public User findUserByUsername(String username){
-        Query q = em.createQuery("SELECT U from User U WHERE U.username = :username", User.class);
+        Query q = em.createQuery("SELECT DISTINCT U from User U WHERE U.username = :username");
         q.setParameter("username", username);
+        
         List<User> result = q.getResultList();
         return result.isEmpty() ? null : result.get(0);
     }
