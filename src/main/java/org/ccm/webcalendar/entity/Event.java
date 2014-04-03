@@ -2,6 +2,7 @@ package org.ccm.webcalendar.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -45,7 +46,7 @@ public class Event implements Comparable, Serializable {
     @Column(name="REPEATED")
     private boolean repeated;
     @Column(name="REPEATED_DAYS")
-    private Boolean[] repeatedDays = new Boolean[7];
+    private List<String> repeatedDays;
     @Column(name="LOCATION")
     private String location;
     @Column(name="PRIORITY")
@@ -53,6 +54,10 @@ public class Event implements Comparable, Serializable {
     @ManyToOne
     @JoinColumn(name="OWNER_ID")
     private User userId;
+    
+    public Event(){
+            
+    }
 
     /**
      * @return the id
@@ -245,19 +250,15 @@ public class Event implements Comparable, Serializable {
     /**
      * @return the repeatedDays
      */
-    public Boolean[] getRepeatedDays() {
+    public List<String> getRepeatedDays() {
         return repeatedDays;
     }
 
     /**
      * @param repeatedDays the repeatedDays to set
      */
-    public void setRepeatedDays(Boolean[] repeatedDays) {
+    public void setRepeatedDays(List<String> repeatedDays) {
         this.repeatedDays = repeatedDays;
     }
-
-
-    
-    
-    
+  
 }

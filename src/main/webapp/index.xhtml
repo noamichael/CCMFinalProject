@@ -57,6 +57,12 @@
                     </p:column>
                     <p:column>
                         <f:facet name="header">
+                            Days Repeated
+                        </f:facet>  
+                        #{event.repeatedDays}
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
                             Delete
                         </f:facet>  
                         <h:form>
@@ -89,17 +95,28 @@
 
                     <h:outputLabel value="Location"/>
                     <h:inputText value="#{loginController.newEvent.location}" required="true" requiredMessage="Please enter a location."/>
-                    
-                    <p:selectBooleanCheckbox value="#{loginController.repeat}">
-                        <p:ajax event="change" update="create_event"/>
-                    </p:selectBooleanCheckbox>
-                    
-                    <h:outputLabel value="Start Time"/>
-                    <p:calendar value="#{loginController.newEvent.startDate}" id="test" pattern="MM/dd/yyyy hh:mm a" rendered="#{!loginController.repeat}" disabled="#{loginController.repeat}" required="true" requiredMessage="Please enter a start date."/>
 
-                    <h:outputLabel value="End Time"/>
+
+                    <h:outputLabel value="Repeated event"/>
+                    <p:selectBooleanCheckbox value="#{loginController.newEvent.repeated}">
+                        <p:ajax event="change" update="create_event"/>
+                    </p:selectBooleanCheckbox>    
+                    <h:outputLabel value="Days repeated" rendered="#{loginController.newEvent.repeated}"/>
+                    <p:selectManyCheckbox id="lineDirection" value="#{loginController.newEvent.repeatedDays}" layout="grid" columns="3"  rendered="#{loginController.newEvent.repeated}">  
+                        <f:selectItem itemLabel="Monday" itemValue="MON" />  
+                        <f:selectItem itemLabel="Tuseday" itemValue="TUE" />  
+                        <f:selectItem itemLabel="Wednesday" itemValue="WED" />
+                        <f:selectItem itemLabel="Thursday" itemValue="THU" />   
+                        <f:selectItem itemLabel="Friday" itemValue="FRI" />  
+                        <f:selectItem itemLabel="Saturday" itemValue="SAT" />  
+                        <f:selectItem itemLabel="Sunday" itemValue="SUN" />  
+                    </p:selectManyCheckbox>  
+
+                    <h:outputLabel value="Start Date"/>
+                    <p:calendar value="#{loginController.newEvent.startDate}"  pattern="MM/dd/yyyy hh:mm a" required="true" requiredMessage="Please enter a start date."/>
+
+                    <h:outputLabel value="End Date"/>
                     <p:calendar value="#{loginController.newEvent.endDate}" pattern="MM/dd/yyyy hh:mm a"/>
-                    
 
                     <h:outputLabel value="Priority"/>
                     <h:selectOneMenu value="#{loginController.newEvent.priority}">
