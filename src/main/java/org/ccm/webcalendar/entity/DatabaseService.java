@@ -35,8 +35,8 @@ public class DatabaseService {
         return q.getResultList();
     }
 
-    public void addUser(User entity) {
-        em.persist(entity);
+    public void addUser(User user) {
+        em.persist(user);
     }
     public void addEvent(Event event){
         em.persist(event);
@@ -48,9 +48,13 @@ public class DatabaseService {
 
     }
 
-    public void remove(Event entity) {
-        em.merge(entity);
-        em.remove(entity);
+    public void remove(User user) {
+        User removed = em.getReference(User.class, user.getId());
+        em.remove(removed);
+    }
+    public void removeEvent(Event event){
+        Event removed = em.getReference(Event.class, event.getId());
+        em.remove(removed);
     }
 
 }
