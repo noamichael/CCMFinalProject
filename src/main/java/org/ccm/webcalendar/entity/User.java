@@ -34,7 +34,7 @@ public class User implements Serializable {
     @Column(name = "PASSWORD")
     @NotNull
     private String password;
-    @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "userId", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.EAGER)
     @PrivateOwned
     private List<Event> events;
 
