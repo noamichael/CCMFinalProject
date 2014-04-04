@@ -1,21 +1,13 @@
 package org.ccm.webcalendar.entity;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import org.eclipse.persistence.annotations.PrivateOwned;
 
 /**
  *
@@ -34,15 +26,13 @@ public class User implements Serializable {
     @Column(name = "PASSWORD")
     @NotNull
     private String password;
-    @OneToMany(mappedBy = "userId", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.EAGER)
-    @PrivateOwned
-    private List<Event> events;
+
 
     public User() {
     }
 
     public void updateUser(User user) {
-        this.events = user.events;
+
         this.id = user.id;
         this.password = user.password;
         this.username = user.username;
@@ -76,19 +66,6 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    /**
-     * @return the events
-     */
-    public List<Event> getEvents() {
-        return events;
-    }
-
-    /**
-     * @param events the events to set
-     */
-    public void setEvents(List<Event> events) {
-        this.events = events;
-    }
 
     public Long getId() {
         return id;
@@ -98,7 +75,4 @@ public class User implements Serializable {
         this.id = id;
     }
 
-    public void sortByDate() {
-        Collections.sort(events);//temporary sort
-    }
 }

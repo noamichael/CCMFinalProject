@@ -1,13 +1,13 @@
 package org.ccm.webcalendar;
 
 import java.io.Serializable;
-import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import org.ccm.webcalendar.entity.DatabaseService;
 import org.ccm.webcalendar.entity.Event;
 import org.ccm.webcalendar.entity.User;
 
@@ -21,8 +21,9 @@ public class ListController implements Serializable {
 
     @Inject
     private LoginController loginController;
+    @Inject
+    private DatabaseService service;
     private transient DataModel<Event> currentEvents;
-    private List<Event> userEvents;
     private User currentUser;
 
     public ListController() {
@@ -30,20 +31,17 @@ public class ListController implements Serializable {
 
     @PostConstruct
     public void init() {
+        if (loginController.getCurrentUser() == null || !loginController.isLoggedIn()) {
+            throw new RuntimeException("The user is not logged in.");
+        }
         currentUser = loginController.getCurrentUser();
-        userEvents = currentUser.getEvents();
-        currentEvents = new ListDataModel();
-    }
-
-    public void sortByDate() {
-        currentUser.sortByDate();
     }
 
     /**
      * @return the currentEvents
      */
     public DataModel<Event> getCurrentEvents() {
-        currentEvents = new ListDataModel(userEvents);
+        this.currentEvents = new ListDataModel(service.findEventByUsername(currentUser.getUsername()));
         return currentEvents;
     }
 
@@ -52,19 +50,5 @@ public class ListController implements Serializable {
      */
     public void setCurrentEvents(DataModel<Event> currentEvents) {
         this.currentEvents = currentEvents;
-    }
-
-    /**
-     * @return the userEvents
-     */
-    public List<Event> getUserEvents() {
-        return userEvents;
-    }
-
-    /**
-     * @param userEvents the userEvents to set
-     */
-    public void setUserEvents(List<Event> userEvents) {
-        this.userEvents = userEvents;
     }
 }

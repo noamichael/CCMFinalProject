@@ -10,7 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -51,9 +51,9 @@ public class Event implements Comparable, Serializable {
     private String location;
     @Column(name="PRIORITY")
     private int priority = LOW;
-    @ManyToOne
-    @JoinColumn(name="OWNER_ID")
-    private User userId;
+    @JoinColumn(name="OWNER")
+    @OneToOne
+    private User owner;
     
     public Event(){
             
@@ -200,23 +200,23 @@ public class Event implements Comparable, Serializable {
 
     @Override
     public String toString() {
-        return "Event{" + "id=" + id + ", name=" + name + ", description=" + description + ", startDate=" + startDate + ", endDate=" + endDate + ", location=" + location + ", priority=" + priority + ", userId=" + userId + '}';
+        return "Event{" + "id=" + id + ", name=" + name + ", description=" + description + ", startDate=" + startDate + ", endDate=" + endDate + ", location=" + location + ", priority=" + priority + ", userId=" + owner + '}';
     }
     
 
 
     /**
-     * @return the userId
+     * @return the owner
      */
-    public User getUserId() {
-        return userId;
+    public User getOwner() {
+        return owner;
     }
 
     /**
-     * @param userId the userId to set
+     * @param userId the owner to set
      */
-    public void setUserId(User userId) {
-        this.userId = userId;
+    public void setOwner(User owner) {
+        this.owner = owner;
     }
 
     /**

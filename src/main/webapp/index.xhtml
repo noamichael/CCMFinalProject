@@ -89,7 +89,6 @@
         <h:form>
             <p:panel header="Create an event.">
                 <h:panelGrid id="create_event">
-                    <h:outputLabel value="Event Name"/>
                     <h:inputText value="#{loginController.newEvent.name}" required="true" requiredMessage="Please enter an event name.">
                         <p:ajax event="keyup" process="@this"/>
                     </h:inputText>
@@ -103,8 +102,6 @@
                     <h:inputText value="#{loginController.newEvent.location}" required="true" requiredMessage="Please enter a location.">
                         <p:ajax event="keyup" process="@this"/>
                     </h:inputText>
-
-
                     <h:outputLabel value="Repeated event"/>
                     <p:selectBooleanCheckbox value="#{loginController.newEvent.repeated}">
                         <p:ajax event="change" update="create_event" listener="#{loginController.repeatedListener()}"/>

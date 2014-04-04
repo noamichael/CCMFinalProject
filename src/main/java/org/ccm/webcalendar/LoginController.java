@@ -3,7 +3,6 @@ package org.ccm.webcalendar;
 import java.io.Serializable;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
@@ -55,14 +54,9 @@ public class LoginController implements Serializable {
         }
     }
     public void addEvent() {
-        if (getCurrentUser().getUsername() != null) {
-            List<Event> allEvents = getCurrentUser().getEvents();
-            
-            newEvent.setUserId(currentUser);
-            allEvents.add(getNewEvent());
-            
-            currentUser.setEvents(allEvents);
-            service.updateUser(currentUser);
+        if (getCurrentUser().getUsername() != null) {       
+            newEvent.setOwner(currentUser);  
+            service.addEvent(newEvent);
             newEvent = new Event();
             addMessage("Event added!");
         }
@@ -73,10 +67,7 @@ public class LoginController implements Serializable {
     }
     public void removeEvent(Event event){
          if (getCurrentUser().getUsername() != null) {
-            List<Event> allEvents = getCurrentUser().getEvents();
-            allEvents.remove(event);
-            currentUser.setEvents(allEvents);
-            service.updateUser(currentUser);
+            service.remove(event);
             addMessage("Event Removed!");
         }
         else{
