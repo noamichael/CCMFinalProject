@@ -12,73 +12,69 @@
     <ui:define name="center"> 
         <p:tabView>
             <p:tab title="List">
+                <h:form>
+                    <p:selectOneRadio value="#{listController.listType}">  
+                        <p:ajax update="table"/>
+                        <f:selectItem itemLabel="Sort by Date" itemValue="0" />  
+                        <f:selectItem itemLabel="Sort by Priority" itemValue="1" />  
 
-
-                <p:dataTable var="event" value="#{listController.currentEvents}" id="table">
-
-
-                    <f:facet name="header">
-                        <h:form>
-                            <p:selectOneRadio id="options" value="#{listController.listType}">  
-                                
-                                <f:selectItem itemLabel="Sort by Date" itemValue="0" />  
-                                <f:selectItem itemLabel="Sort by Priority" itemValue="1" />  
-
-                            </p:selectOneRadio>
-                        </h:form>
-                        Current Events
-                    </f:facet>
-                    <p:column>
+                    </p:selectOneRadio>
+                    <p:dataTable var="event" value="#{listController.currentEvents}" id="table">
                         <f:facet name="header">
-                            Event Name
-                        </f:facet>  
-                        #{event.name}
-                    </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            Location
-                        </f:facet>  
-                        #{event.location}
-                    </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            Description
-                        </f:facet>  
-                        #{event.description}
-                    </p:column>  
-                    <p:column>
-                        <f:facet name="header">
-                            Priority
-                        </f:facet>  
-                        #{event.priority}
-                    </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            Start Date
-                        </f:facet>  
-                        #{event.startDate}
-                    </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            End Date
-                        </f:facet>  
-                        #{event.endDate}
-                    </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            Days Repeated
-                        </f:facet>  
-                        #{event.repeatedDays}
-                    </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            Delete
-                        </f:facet>  
-                        <h:form>
-                            <h:commandButton actionListener="#{loginController.removeEvent(event)}" value="Delete"/>
-                        </h:form>
-                    </p:column>
-                </p:dataTable> 
+                            Current Events
+                        </f:facet>
+                        <p:column>
+                            <f:facet name="header">
+                                Event Name
+                            </f:facet>  
+                            #{event.name}
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                Location
+                            </f:facet>  
+                            #{event.location}
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                Description
+                            </f:facet>  
+                            #{event.description}
+                        </p:column>  
+                        <p:column>
+                            <f:facet name="header">
+                                Priority
+                            </f:facet>  
+                            #{event.priority}
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                Start Date
+                            </f:facet>  
+                            #{event.startDate}
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                End Date
+                            </f:facet>  
+                            #{event.endDate}
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                Days Repeated
+                            </f:facet>  
+                            #{event.repeatedDays}
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                Delete
+                            </f:facet>  
+                            <h:form>
+                                <h:commandButton actionListener="#{loginController.removeEvent(event)}" value="Delete"/>
+                            </h:form>
+                        </p:column>
+                    </p:dataTable> 
+                </h:form>
             </p:tab>
             <p:tab title="Calendar">
                 <h:form>
