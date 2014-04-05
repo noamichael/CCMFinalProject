@@ -17,9 +17,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.validator.FacesValidator;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
-import javax.inject.Inject;
-import org.ccm.webcalendar.entity.DatabaseService;
-import org.ccm.webcalendar.entity.Event;
+
 
 /**
  *
@@ -27,10 +25,6 @@ import org.ccm.webcalendar.entity.Event;
  */
 @FacesValidator("eventValidator")
 public class EventValidator implements Validator {
-
-    @Inject
-    private DatabaseService service;
-    private Event event;
 
     private Date startDate;
     private Date endDate;
