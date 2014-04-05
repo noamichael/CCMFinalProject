@@ -42,7 +42,7 @@ public class DatabaseService {
     }
     
     public List<Event> findPrioritySortedEventByUsername(String username){
-        Query q = em.createQuery("SELECT E from Event E WHERE E.owner.username = :username ORDER BY  E.priority ASC");
+        Query q = em.createQuery("SELECT E from Event E WHERE E.owner.username = :username ORDER BY  E.priority DESC");
         q.setParameter("username", username);
         return q.getResultList();
     }
