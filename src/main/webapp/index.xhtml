@@ -12,11 +12,20 @@
     <ui:define name="center"> 
         <p:tabView>
             <p:tab title="List">
-                <h:form>
-                    <h:commandButton value="Sort by Date" action="#{listController.sortByDate()}"/>
-                </h:form>
+
+
                 <p:dataTable var="event" value="#{listController.currentEvents}" id="table">
+
+
                     <f:facet name="header">
+                        <h:form>
+                            <p:selectOneRadio id="options" value="#{listController.listType}">  
+                                
+                                <f:selectItem itemLabel="Sort by Date" itemValue="0" />  
+                                <f:selectItem itemLabel="Sort by Priority" itemValue="1" />  
+
+                            </p:selectOneRadio>
+                        </h:form>
                         Current Events
                     </f:facet>
                     <p:column>
@@ -123,10 +132,14 @@
                     </p:selectManyCheckbox>  
 
                     <h:outputLabel value="Start Date"/>
-                    <p:calendar value="#{loginController.newEvent.startDate}"  pattern="MM/dd/yyyy hh:mm a" required="true" requiredMessage="Please enter a start date."/>
+                    <p:calendar value="#{loginController.newEvent.startDate}" binding="#{start}"  pattern="MM/dd/yyyy hh:mm a" required="true" requiredMessage="Please enter a start date.">
+                        <f:validator validatorId="eventValidator"/>
+                        <f:attribute name="end" value="#{end}"/>
+                    </p:calendar>
 
                     <h:outputLabel value="End Date"/>
-                    <p:calendar value="#{loginController.newEvent.endDate}" pattern="MM/dd/yyyy hh:mm a"/>
+                    <p:calendar value="#{loginController.newEvent.endDate}" binding="#{end}" pattern="MM/dd/yyyy hh:mm a"/>
+
 
                     <h:outputLabel value="Priority"/>
                     <h:selectOneMenu value="#{loginController.newEvent.priority}">

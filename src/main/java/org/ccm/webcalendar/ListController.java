@@ -1,6 +1,7 @@
 package org.ccm.webcalendar;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
@@ -25,6 +26,10 @@ public class ListController implements Serializable {
     private DatabaseService service;
     private transient DataModel<Event> currentEvents;
     private User currentUser;
+    private int listType =0;
+    
+    private static final int BY_DATE =0;
+    private static final int BY_PRIORITY=1;
 
     public ListController() {
     }
@@ -50,5 +55,40 @@ public class ListController implements Serializable {
      */
     public void setCurrentEvents(DataModel<Event> currentEvents) {
         this.currentEvents = currentEvents;
+    }
+    
+    public DataModel<Event> getSortedEvents(){
+        
+        switch(getListType()){
+            
+            case BY_DATE:{
+                currentEvents=new ListDataModel(service.findDateSortedEventByUsername(currentUser.getUsername()));
+                break;
+            }
+            
+            case BY_PRIORITY:{
+                currentEvents=new ListDataModel(service.findPrioritySortedEventByUsername(currentUser.getUsername()));
+                break;
+            }
+            
+            
+        }
+        
+        return currentEvents;
+        
+    }
+
+    /**
+     * @return the listType
+     */
+    public int getListType() {
+        return listType;
+    }
+
+    /**
+     * @param listType the listType to set
+     */
+    public void setListType(int listType) {
+        this.listType = listType;
     }
 }

@@ -34,6 +34,18 @@ public class DatabaseService {
         q.setParameter("username", username);
         return q.getResultList();
     }
+    
+    public List<Event> findDateSortedEventByUsername(String username){
+        Query q = em.createQuery("SELECT E from Event E WHERE E.owner.username = :username ORDER BY E.startDate ASC");
+        q.setParameter("username", username);
+        return q.getResultList();
+    }
+    
+    public List<Event> findPrioritySortedEventByUsername(String username){
+        Query q = em.createQuery("SELECT E from Event E WHERE E.owner.username = :username ORDER BY  E.priority ASC");
+        q.setParameter("username", username);
+        return q.getResultList();
+    }
 
     public void addUser(User user) {
         em.persist(user);
