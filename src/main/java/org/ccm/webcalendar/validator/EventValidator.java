@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package org.ccm.webcalendar.validator;
 
 import java.text.ParseException;
@@ -26,17 +25,16 @@ import org.ccm.webcalendar.entity.Event;
  *
  * @author Trevor Florio
  */
-
 @FacesValidator("eventValidator")
 public class EventValidator implements Validator {
-    
+
     @Inject
     private DatabaseService service;
     private Event event;
-    
+
     private Date startDate;
     private Date endDate;
-    
+
     private static final String ERROR = "Event cannot end before it starts.";
 
     @Override
@@ -48,15 +46,19 @@ public class EventValidator implements Validator {
         startDate = (Date) value;
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
         String ed = (String) input.getSubmittedValue();
+
         try {
             endDate = sdf.parse(ed);
         } catch (ParseException ex) {
             Logger.getLogger(EventValidator.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        if(startDate.after(endDate)){
-            throw new ValidatorException(msg);
+
+        if (startDate != null && endDate != null) {
+            if (startDate.after(endDate)) {
+                throw new ValidatorException(msg);
+            }
         }
+
     }
-    
+
 }
