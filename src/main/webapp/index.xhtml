@@ -141,6 +141,13 @@
 
                     <h:outputLabel value="End Date" rendered="#{!loginController.newEvent.allDay}"/>
                     <p:calendar value="#{loginController.newEvent.endDate}" binding="#{end}" rendered="#{!loginController.newEvent.allDay}" pattern="MM/dd/yyyy hh:mm a"/>
+                    
+                    <h:outputLabel value="Start Date" rendered="#{loginController.newEvent.allDay}"/>
+                    <p:calendar value="#{loginController.newEvent.startDate}"  rendered="#{loginController.newEvent.allDay}"  pattern="MM/dd/yyyy" required="true" requiredMessage="Please enter a start date.">
+                    </p:calendar>
+
+                    <h:outputLabel value="End Date" rendered="#{loginController.newEvent.allDay}"/>
+                    <p:calendar value="#{loginController.newEvent.endDate}" rendered="#{loginController.newEvent.allDay}" pattern="MM/dd/yyyy"/>
 
 
                     <h:outputLabel value="Priority"/>
@@ -150,7 +157,7 @@
                         <f:selectItem itemLabel="Low" itemValue="1"/>
                     </h:selectOneMenu>
 
-                    <h:commandButton action="#{loginController.addEvent()}" value="Add Event"/>
+                    <h:commandButton action="#{loginController.addEvent()}" onclick="#{calendarController.updateEvents()}" value="Add Event"/>
 
 
 

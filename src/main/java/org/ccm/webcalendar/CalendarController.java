@@ -34,6 +34,10 @@ public class CalendarController implements Serializable {
 
     @PostConstruct
     public void init() {
+        updateEvents();
+    }
+
+    public void updateEvents() {
         eventModel = new DefaultScheduleModel();
         currentUser = loginController.getCurrentUser();
         currentEvents = service.findEventByUsername(currentUser.getUsername());
@@ -74,10 +78,8 @@ public class CalendarController implements Serializable {
      * @return the eventModel
      */
     public ScheduleModel getEventModel() {
-        currentUser = loginController.getCurrentUser();
-        currentEvents = service.findEventByUsername(currentUser.getUsername());
-        for (Event e : currentEvents) {
-            eventModel.addEvent(e);
+        if (eventModel == null) {
+            updateEvents();
         }
         return eventModel;
     }

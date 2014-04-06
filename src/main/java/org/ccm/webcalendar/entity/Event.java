@@ -43,7 +43,6 @@ public class Event implements Comparable, Serializable, ScheduleEvent {
     @Column(name = "ENABLED")
     private boolean enabled;
     @Column(name = "STARTDATE")
-    @NotNull
     @Temporal(value = TemporalType.DATE)
     private Date startDate;
     @Temporal(value = TemporalType.DATE)
