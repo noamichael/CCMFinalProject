@@ -28,7 +28,7 @@
                         <f:facet name="header">
                             Event Name
                         </f:facet>  
-                        #{event.name}
+                        #{event.title}
                     </p:column>
                     <p:column>
                         <f:facet name="header">
@@ -78,7 +78,7 @@
             </p:tab>
             <p:tab title="Calendar">
                 <h:form>
-                    <p:schedule/>
+                    <p:schedule value="#{calendarController.eventModel}"/>
                 </h:form>
             </p:tab>
         </p:tabView>
@@ -94,7 +94,8 @@
         <h:form>
             <p:panel header="Create an event.">
                 <h:panelGrid id="create_event">
-                    <h:inputText value="#{loginController.newEvent.name}" required="true" requiredMessage="Please enter an event name.">
+                    <h:outputLabel value="Title"/>
+                    <h:inputText value="#{loginController.newEvent.title}" required="true" requiredMessage="Please enter an event name.">
                         <p:ajax event="keyup" process="@this"/>
                     </h:inputText>
                     <br/>
@@ -127,14 +128,19 @@
                         <f:selectItem itemLabel="Sunday" itemValue="SUN" />  
                     </p:selectManyCheckbox>  
 
-                    <h:outputLabel value="Start Date"/>
-                    <p:calendar value="#{loginController.newEvent.startDate}" binding="#{start}"  pattern="MM/dd/yyyy hh:mm a" required="true" requiredMessage="Please enter a start date.">
+
+                    <h:outputLabel value="All Day"/>
+                    <p:selectBooleanCheckbox value="#{loginController.newEvent.allDay}">
+                        <p:ajax event="change" update="create_event"/>
+                    </p:selectBooleanCheckbox>
+                    <h:outputLabel value="Start Date" rendered="#{!loginController.newEvent.allDay}"/>
+                    <p:calendar value="#{loginController.newEvent.startDate}" binding="#{start}" rendered="#{!loginController.newEvent.allDay}"  pattern="MM/dd/yyyy hh:mm a" required="true" requiredMessage="Please enter a start date.">
                         <f:validator validatorId="eventValidator"/>
                         <f:attribute name="end" value="#{end}"/>
                     </p:calendar>
 
-                    <h:outputLabel value="End Date"/>
-                    <p:calendar value="#{loginController.newEvent.endDate}" binding="#{end}" pattern="MM/dd/yyyy hh:mm a"/>
+                    <h:outputLabel value="End Date" rendered="#{!loginController.newEvent.allDay}"/>
+                    <p:calendar value="#{loginController.newEvent.endDate}" binding="#{end}" rendered="#{!loginController.newEvent.allDay}" pattern="MM/dd/yyyy hh:mm a"/>
 
 
                     <h:outputLabel value="Priority"/>

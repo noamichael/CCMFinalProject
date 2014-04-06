@@ -65,7 +65,7 @@ public class DatabaseService {
         em.remove(removed);
     }
     public void removeEvent(Event event){
-        Event removed = em.getReference(Event.class, event.getId());
+        Event removed = em.getReference(Event.class, event.getPk());
         em.remove(removed);
     }
 

@@ -15,69 +15,80 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
+import org.primefaces.model.ScheduleEvent;
 
 /**
  *
  * @author Michael Kucinski/Trevor Florio
  */
 @Entity
-@Table(name="EVENT")
-public class Event implements Comparable, Serializable {
-    
-    public static final int HIGH = 3;
-    public static final int MEDIUM = 2;
-    public static final int LOW = 1;
+@Table(name = "EVENT")
+public class Event implements Comparable, Serializable, ScheduleEvent {
+
+    private static final int HIGH = 3;
+    private static final int MEDIUM = 2;
+    private static final int LOW = 1;
 
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private Long id;
-    @Column(name="NAME")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "PK")
+    private Long pk;
+    @Column(name = "NAME")
     @NotNull
-    private String name;
-    @Column(name="DESCRIPTION")    
+    private String title;
+    @Column(name = "DESCRIPTION")
     private String description;
-    @Column(name="STARTDATE")
+    @Column(name = "ALL_DAY")
+    private boolean allDay;
+    @Column(name = "ENABLED")
+    private boolean enabled;
+    @Column(name = "STARTDATE")
     @NotNull
-    @Temporal(value=TemporalType.DATE)
+    @Temporal(value = TemporalType.DATE)
     private Date startDate;
-    @Temporal(value=TemporalType.DATE)
-    @Column(name="ENDDATE")
-    private Date endDate; 
-    @Column(name="REPEATED")
+    @Temporal(value = TemporalType.DATE)
+    @Column(name = "ENDDATE")
+    private Date endDate;
+    @Column(name = "REPEATED")
     private boolean repeated;
-    @Column(name="REPEATED_DAYS")
+    @Column(name = "STYLE")
+    private String styleClass;
+    @Column(name = "ID")
+    private String id;
+    @Column(name = "REPEATED_DAYS")
     private List<String> repeatedDays;
-    @Column(name="LOCATION")
+    @Column(name = "LOCATION")
     private String location;
-    @Column(name="PRIORITY")
+    @Column(name = "PRIORITY")
     private int priority = LOW;
-    @JoinColumn(name="OWNER")
+    @JoinColumn(name = "OWNER")
     @OneToOne
     private User owner;
-    
-    public Event(){
-            
+
+    public Event() {
+
     }
 
     /**
      * @return the id
      */
-    public Long getId() {
-        return id;
+    public Long getPk() {
+        return pk;
     }
 
     /**
-     * @return the name
+     * @return the Title
      */
-    public String getName() {
-        return name;
+    @Override
+    public String getTitle() {
+        return title;
     }
 
     /**
-     * @param name the name to set
+     * @param title
      */
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     /**
@@ -97,6 +108,7 @@ public class Event implements Comparable, Serializable {
     /**
      * @return the startDate
      */
+    @Override
     public Date getStartDate() {
         return startDate;
     }
@@ -111,6 +123,7 @@ public class Event implements Comparable, Serializable {
     /**
      * @return the endDate
      */
+    @Override
     public Date getEndDate() {
         return endDate;
     }
@@ -123,10 +136,10 @@ public class Event implements Comparable, Serializable {
     }
 
     /**
-     * @param id the id to set
+     * @param pk
      */
-    public void setId(Long id) {
-        this.id = id;
+    public void setPk(Long pk) {
+        this.pk = pk;
     }
 
     /**
@@ -145,29 +158,27 @@ public class Event implements Comparable, Serializable {
 
     @Override
     public int compareTo(Object o) {
-        if(o instanceof Event == false){
+        if (o instanceof Event == false) {
             throw new RuntimeException(String.format("Object [%s] is not an event!", o.getClass()));
         }
-        
-        Event e = (Event)o;
-        
-        if(e.getStartDate().equals(this.getStartDate())){
+
+        Event e = (Event) o;
+
+        if (e.getStartDate().equals(this.getStartDate())) {
             return 0;
-        }
-        else if(e.getStartDate().before(this.getStartDate())){
+        } else if (e.getStartDate().before(this.getStartDate())) {
             return -1;
-            
-        }
-        else{
+
+        } else {
             return 1;
         }
-        
+
     }
 
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 79 * hash + Objects.hashCode(this.getId());
+        hash = 79 * hash + Objects.hashCode(this.getPk());
         hash = 79 * hash + Objects.hashCode(this.getStartDate());
         hash = 79 * hash + Objects.hashCode(this.getEndDate());
         hash = 79 * hash + Objects.hashCode(this.getPriority());
@@ -183,10 +194,10 @@ public class Event implements Comparable, Serializable {
             return false;
         }
         final Event other = (Event) obj;
-        if (!Objects.equals(this.id, other.id)) {
+        if (!Objects.equals(this.pk, other.pk)) {
             return false;
         }
-        if (!Objects.equals(this.name, other.name)) {
+        if (!Objects.equals(this.title, other.title)) {
             return false;
         }
         if (!Objects.equals(this.startDate, other.startDate)) {
@@ -200,10 +211,8 @@ public class Event implements Comparable, Serializable {
 
     @Override
     public String toString() {
-        return "Event{" + "id=" + id + ", name=" + name + ", description=" + description + ", startDate=" + startDate + ", endDate=" + endDate + ", location=" + location + ", priority=" + priority + ", userId=" + owner + '}';
+        return "Event{" + "pk=" + getPk() + ", title=" + getTitle() + ", description=" + getDescription() + ", startDate=" + getStartDate() + ", endDate=" + getEndDate() + ", location=" + getLocation() + ", priority=" + getPriority() + ", userId=" + getOwner() + '}';
     }
-    
-
 
     /**
      * @return the owner
@@ -213,7 +222,9 @@ public class Event implements Comparable, Serializable {
     }
 
     /**
-     * @param userId the owner to set
+     * t
+     *
+     * @param owner
      */
     public void setOwner(User owner) {
         this.owner = owner;
@@ -260,8 +271,67 @@ public class Event implements Comparable, Serializable {
     public void setRepeatedDays(List<String> repeatedDays) {
         this.repeatedDays = repeatedDays;
     }
-    public boolean isEveryDay(){
-        return repeatedDays == null ? false: repeatedDays.contains("ALL");
+
+    public boolean isEveryDay() {
+        return getRepeatedDays() == null ? false : getRepeatedDays().contains("ALL");
     }
-  
+
+    @Override
+    public String getId() {
+        return this.id;
+    }
+
+    @Override
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    @Override
+    public Object getData() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean isAllDay() {
+        return this.allDay;
+    }
+
+    @Override
+    public String getStyleClass() {
+        return this.styleClass;
+    }
+
+    @Override
+    public boolean isEditable() {
+        return this.isEnabled();
+    }
+
+    /**
+     * @param allDay the allDay to set
+     */
+    public void setAllDay(boolean allDay) {
+        this.allDay = allDay;
+    }
+
+    /**
+     * @return the enabled
+     */
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    /**
+     * @param enabled the enabled to set
+     */
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    /**
+     * @param styleClass the styleClass to set
+     */
+    public void setStyleClass(String styleClass) {
+        this.styleClass = styleClass;
+    }
+
 }
