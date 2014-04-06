@@ -1,6 +1,10 @@
 package org.ccm.webcalendar;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
@@ -42,8 +46,36 @@ public class CalendarController implements Serializable {
         currentUser = loginController.getCurrentUser();
         currentEvents = service.findEventByUsername(currentUser.getUsername());
         for (Event e : currentEvents) {
-            eventModel.addEvent(e);
+            if (e.isRepeated()) {
+                for (Event repeated : createRepeatedEvents(e)) {
+                    eventModel.addEvent(repeated);
+                }
+            } else {
+                eventModel.addEvent(e);
+            }
         }
+    }
+
+    public List<Event> createRepeatedEvents(Event event) {
+        if (event.getStartDate() == null || event.getEndDate() == null) {
+            throw new RuntimeException("Repeated events must have both a start"
+                    + "date ");
+        }
+        List<Event> repeatedDays = new ArrayList();
+        Calendar calendar = new GregorianCalendar();
+        Date startDate = event.getStartDate();
+        calendar.setTime(startDate);
+        Date currentDate = event.getStartDate();
+        int day = calendar.get(Calendar.DAY_OF_WEEK);
+        while (!currentDate.equals(event.getEndDate())) {
+            if (event.getRepeatedDays().contains(Integer.toString(day))) {
+                repeatedDays.add(new Event(event.getTitle(), event.getDescription(), event.getStartDate(), event.getStartDate()));
+            }
+            calendar.add(Calendar.DATE, 1);
+            currentDate = calendar.getTime();
+            day = calendar.get(Calendar.DAY_OF_WEEK);
+        }
+        return repeatedDays;
     }
 
     /**

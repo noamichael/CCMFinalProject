@@ -68,6 +68,13 @@ public class Event implements Comparable, Serializable, ScheduleEvent {
 
     }
 
+    public Event(String title, String description, Date startDate, Date endDate) {
+        this.title = title;
+        this.description = description;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
+
     /**
      * @return the id
      */
