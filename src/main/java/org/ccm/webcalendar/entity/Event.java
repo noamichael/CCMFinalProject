@@ -43,9 +43,9 @@ public class Event implements Comparable, Serializable, ScheduleEvent {
     @Column(name = "ENABLED")
     private boolean enabled;
     @Column(name = "STARTDATE")
-    @Temporal(value = TemporalType.DATE)
+    @Temporal(value = TemporalType.TIMESTAMP)
     private Date startDate;
-    @Temporal(value = TemporalType.DATE)
+    @Temporal(value = TemporalType.TIMESTAMP)
     @Column(name = "ENDDATE")
     private Date endDate;
     @Column(name = "REPEATED")

@@ -62,18 +62,34 @@ public class CalendarController implements Serializable {
                     + "date ");
         }
         List<Event> repeatedDays = new ArrayList();
-        Calendar calendar = new GregorianCalendar();
+        Calendar startCal = new GregorianCalendar();
+        Calendar endCal = new GregorianCalendar();
+        Calendar finalCal = new GregorianCalendar();
+
         Date startDate = event.getStartDate();
-        calendar.setTime(startDate);
+        Date endDate = event.getEndDate();
+
+        startCal.setTime(startDate);
+        endCal.setTime(endDate);
+
+        int startTime = startCal.get(Calendar.HOUR);
+        int endTime = endCal.get(Calendar.HOUR);
+
         Date currentDate = event.getStartDate();
-        int day = calendar.get(Calendar.DAY_OF_WEEK);
+        Date currentEndDate = event.getStartDate();
+        int day = startCal.get(Calendar.DAY_OF_WEEK);
         while (!currentDate.equals(event.getEndDate())) {
-            if (event.getRepeatedDays().contains(Integer.toString(day))) {
-                repeatedDays.add(new Event(event.getTitle(), event.getDescription(), event.getStartDate(), event.getStartDate()));
+            if (event.getRepeatedDays().contains(dayIntToString(day))) {
+                finalCal.setTime(currentDate);
+                finalCal.set(Calendar.HOUR_OF_DAY, startTime);
+                endCal.setTime(currentEndDate);
+                endCal.set(Calendar.HOUR_OF_DAY, endTime);
+                repeatedDays.add(new Event(event.getTitle(), event.getDescription(), finalCal.getTime(), endCal.getTime()));
             }
-            calendar.add(Calendar.DATE, 1);
-            currentDate = calendar.getTime();
-            day = calendar.get(Calendar.DAY_OF_WEEK);
+            startCal.add(Calendar.DATE, 1);
+            currentDate = startCal.getTime();
+            currentEndDate = endCal.getTime();
+            day = startCal.get(Calendar.DAY_OF_WEEK);
         }
         return repeatedDays;
     }
@@ -121,6 +137,36 @@ public class CalendarController implements Serializable {
      */
     public void setEventModel(ScheduleModel eventModel) {
         this.eventModel = eventModel;
+    }
+
+    public String dayIntToString(int day) {
+        String dayString = "";
+        switch (day) {
+            case 1:
+                dayString = "SUN";
+                break;
+            case 2:
+                dayString = "MON";
+                break;
+            case 3:
+                dayString = "TUE";
+                break;
+            case 4:
+                dayString = "WED";
+                break;
+            case 5:
+                dayString = "THU";
+                break;
+            case 6:
+                dayString = "FRI";
+                break;
+            case 7:
+                dayString = "SAT";
+                break;
+            default:
+                break;
+        }
+        return dayString;
     }
 
 }
