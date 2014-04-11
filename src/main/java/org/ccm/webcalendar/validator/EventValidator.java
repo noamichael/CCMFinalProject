@@ -17,6 +17,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.validator.FacesValidator;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
+import javax.inject.Inject;
+import org.ccm.webcalendar.entity.DatabaseService;
 
 
 /**
@@ -26,6 +28,8 @@ import javax.faces.validator.ValidatorException;
 @FacesValidator("eventValidator")
 public class EventValidator implements Validator {
 
+    @Inject
+    private DatabaseService service; //TO:DO -- ADD A CHECK TO PREVENT/WARN OF OVERLAPPING EVENTS
     private Date startDate;
     private Date endDate;
 
