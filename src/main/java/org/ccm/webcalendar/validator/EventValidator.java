@@ -1,4 +1,4 @@
-/*
+ /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -8,6 +8,7 @@ package org.ccm.webcalendar.validator;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
@@ -19,7 +20,6 @@ import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
 import javax.inject.Inject;
 import org.ccm.webcalendar.entity.DatabaseService;
-
 
 /**
  *
@@ -52,6 +52,10 @@ public class EventValidator implements Validator {
         }
 
         if (startDate != null && endDate != null) {
+            List<Date> overlapping = service.findOverlappingEvents(startDate, endDate);
+            if (!overlapping.isEmpty()) {
+                throw new ValidatorException(new FacesMessage("There already exists an event at the time/date."));
+            }
             if (startDate.after(endDate)) {
                 throw new ValidatorException(msg);
             }
