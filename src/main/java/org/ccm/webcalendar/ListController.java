@@ -1,12 +1,10 @@
 package org.ccm.webcalendar;
 
 import java.io.Serializable;
-import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
-import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.ccm.webcalendar.entity.DatabaseService;
@@ -14,7 +12,7 @@ import org.ccm.webcalendar.entity.Event;
 import org.ccm.webcalendar.entity.User;
 
 /**
- *
+ * A session scoped bean to control the list of events displayed in the view.
  * @author Michael Kucinski/Trevor Florio
  */
 @Named
@@ -34,7 +32,9 @@ public class ListController implements Serializable {
 
     public ListController() {
     }
-
+    /**
+     * A bean which runs right after construction and sets the current identity.
+     */
     @PostConstruct
     public void init() {
         if (loginController.getCurrentUser() == null || !loginController.isLoggedIn()) {
@@ -44,7 +44,7 @@ public class ListController implements Serializable {
     }
 
     /**
-     * @return the currentEvents
+     * @return the currentEvents, sorted
      */
     public DataModel<Event> getCurrentEvents() {
         switch (getListType()) {

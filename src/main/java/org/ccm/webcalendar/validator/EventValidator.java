@@ -22,7 +22,7 @@ import javax.inject.Inject;
 import org.ccm.webcalendar.entity.DatabaseService;
 
 /**
- *
+ * A class which validates that events are valid.
  * @author Trevor Florio
  */
 @FacesValidator("eventValidator")
@@ -54,7 +54,7 @@ public class EventValidator implements Validator {
         if (startDate != null && endDate != null) {
             List<Date> overlapping = service.findOverlappingEvents(startDate, endDate);
             if (!overlapping.isEmpty()) {
-                throw new ValidatorException(new FacesMessage("There already exists an event at the time/date."));
+                //throw new ValidatorException(new FacesMessage("There already exists an event at the time/date."));
             }
             if (startDate.after(endDate)) {
                 throw new ValidatorException(msg);

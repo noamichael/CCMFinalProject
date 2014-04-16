@@ -28,6 +28,9 @@ public class LoginController implements Serializable {
     private boolean loggedIn;
     private Event newEvent;
 
+    /**
+     * Registers a user after validation.
+     */
     public void register() {
         newUser.setPassword(hashPass(newUser.getPassword()));
         getService().addUser(getNewUser());
@@ -35,42 +38,60 @@ public class LoginController implements Serializable {
         addMessage("Account created! Feel free to login.");
     }
 
+    /**
+     * Logs in a user after validation.
+     */
     public void login() {
         this.setLoggedIn(true);
-        this.setCurrentUser(getService().findUserByUsername(getCurrentUser().getUsername()));
-        if(this.currentUser == null){
+        this.setCurrentUser(getService().loginByUsername(getCurrentUser().getUsername()));
+        if (this.currentUser == null) {
             throw new RuntimeException("NULL USER!");
         }
     }
 
+    /**
+     * Logs out a user and invalidates the current session.
+     */
     public void logout() {
         this.setLoggedIn(false);
         this.setCurrentUser(new User());
         FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
     }
-    public void repeatedListener(){
-        if(!newEvent.isRepeated() && newEvent.getRepeatedDays() != null){
+
+    /**
+     * Ajax action listener to clear repeated events if needed.
+     */
+    public void repeatedListener() {
+        if (!newEvent.isRepeated() && newEvent.getRepeatedDays() != null) {
             newEvent.getRepeatedDays().clear();
         }
     }
+
+    /**
+     * Adds a new event to the persistence context
+     */
     public void addEvent() {
-        if (getCurrentUser().getUsername() != null) {       
-            newEvent.setOwner(currentUser);  
+        if (getCurrentUser().getUsername() != null) {
+            newEvent.setOwner(currentUser);
             service.addEvent(newEvent);
             newEvent = new Event();
             addMessage("Event added!");
-        }
-        else{
-            addMessage("The event could not be added.");
+        } else {
+            addMessage("The event could not be added because the user is not logged in.");
         }
 
     }
-    public void removeEvent(Event event){
-         if (getCurrentUser().getUsername() != null) {
+
+    /**
+     * Removes an event from the persistence context.
+     *
+     * @param event The event to remove.
+     */
+    public void removeEvent(Event event) {
+        if (getCurrentUser().getUsername() != null) {
             service.removeEvent(event);
             addMessage("Event Removed!");
-        }
-        else{
+        } else {
             addMessage("The event could not be removed.");
         }
     }
@@ -103,6 +124,10 @@ public class LoginController implements Serializable {
         this.loggedIn = loggedIn;
     }
 
+    /**
+     * A method which runs after construction and initializes class with default
+     * values.
+     */
     @PostConstruct
     public void init() {
         this.setCurrentUser(new User());
@@ -110,6 +135,12 @@ public class LoginController implements Serializable {
         this.newUser = new User();
     }
 
+    /**
+     * Hashes a String with SHA.
+     *
+     * @param pass the password to be encrypted
+     * @return the encrypted password
+     */
     public String hashPass(String pass) {
         byte[] bytes;
         try {
@@ -127,6 +158,11 @@ public class LoginController implements Serializable {
         return pass;
     }
 
+    /**
+     * Adds a message to the view.
+     *
+     * @param message The message to be displayed on the view.
+     */
     public void addMessage(String message) {
         FacesMessage msg = new FacesMessage(message);
         msg.setSeverity(FacesMessage.SEVERITY_INFO);

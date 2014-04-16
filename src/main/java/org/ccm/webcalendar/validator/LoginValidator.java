@@ -14,7 +14,7 @@ import org.ccm.webcalendar.entity.DatabaseService;
 import org.ccm.webcalendar.entity.User;
 
 /**
- *
+ * A class which validates that the user credentials are valid.
  * @author Michael Kucinski
  */
 @FacesValidator("loginValidator")

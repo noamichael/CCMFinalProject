@@ -18,7 +18,7 @@ import javax.validation.constraints.NotNull;
 import org.primefaces.model.ScheduleEvent;
 
 /**
- *
+ * An entity which represents an event.
  * @author Michael Kucinski/Trevor Florio
  */
 @Entity

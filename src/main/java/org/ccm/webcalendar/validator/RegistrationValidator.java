@@ -1,7 +1,5 @@
 package org.ccm.webcalendar.validator;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
@@ -14,7 +12,7 @@ import org.ccm.webcalendar.entity.DatabaseService;
 import org.ccm.webcalendar.entity.User;
 
 /**
- *
+ * A class which validates that new account information is valid.
  * @author Michael Kucinski
  */
 @FacesValidator("registrationValidator")

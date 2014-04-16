@@ -10,7 +10,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 /**
- *
+ * An entity which represents a user.
  * @author Trevor Florio
  */
 @Entity
@@ -27,8 +27,12 @@ public class User implements Serializable {
     @NotNull
     private String password;
 
-
     public User() {
+    }
+
+    public User(String username, long id) {
+        this.id = id;
+        this.username = username;
     }
 
     public void updateUser(User user) {
@@ -65,7 +69,6 @@ public class User implements Serializable {
     public void setPassword(String password) {
         this.password = password;
     }
-
 
     public Long getId() {
         return id;
