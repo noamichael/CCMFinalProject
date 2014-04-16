@@ -22,7 +22,7 @@ import javax.inject.Inject;
 import org.ccm.webcalendar.entity.DatabaseService;
 
 /**
- * A class which validates that events are valid.
+ * A class which validates that the user submitted data for an event is valid.
  * @author Trevor Florio
  */
 @FacesValidator("eventValidator")
