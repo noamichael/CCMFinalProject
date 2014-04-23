@@ -8,6 +8,9 @@
         <param-name>primefaces.THEME</param-name>
         <param-value>rocket</param-value>
     </context-param>
+    <error-page>
+        <location>/error.xhtml</location>
+    </error-page>
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>

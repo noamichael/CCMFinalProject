@@ -84,6 +84,7 @@ public class CalendarController implements Serializable {
         Calendar startCal = new GregorianCalendar();
         Calendar endCal = new GregorianCalendar();
         startCal.setTime(startDate);
+        System.out.println("HELLO!");
         endCal.setTime(endDate);
 
         //Get the end time

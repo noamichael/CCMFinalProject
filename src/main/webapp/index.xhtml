@@ -17,9 +17,11 @@
                         <p:ajax update=":tab_containter"/>
                         <f:selectItem itemLabel="Sort by Date" itemValue="0" />  
                         <f:selectItem itemLabel="Sort by Priority" itemValue="1" />  
-
                     </p:selectOneRadio>
                 </h:form>  
+                <h:form>
+                    <h:commandButton value="Cause error" action="#{calendarController.createRepeatedEvents('')}"/>
+                </h:form>
                 <p:dataTable var="event" value="#{listController.currentEvents}" id="table">
                     <f:facet name="header">
                         Current Events

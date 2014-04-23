@@ -93,9 +93,11 @@
                     </p:panel>
                 </ui:fragment>                
             </p:layoutUnit>  
-            <p:layoutUnit position="west" size="300" id="west" rendered="#{loginController.loggedIn}">  
-                <ui:insert name="west"></ui:insert>
-            </p:layoutUnit> 
+            <ui:insert name="sidebar">
+                <p:layoutUnit position="west" size="300" id="west" rendered="#{loginController.loggedIn}">  
+                    <ui:insert name="west"></ui:insert>
+                </p:layoutUnit> 
+            </ui:insert>
         </p:layout>
     </h:body>
 </html>
