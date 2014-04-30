@@ -52,14 +52,13 @@ public class CalendarController implements Serializable {
         currentUser = loginController.getCurrentUser();
         currentEvents = service.findEventByUsername(currentUser.getUsername());
         for (Event e : currentEvents) {
-            eventModel.addEvent(e);
-//            if (e.isRepeated()) {
-//                for (Event repeated : createRepeatedEvents(e)) {
-//                    eventModel.addEvent(repeated);
-//                }
-//            } else {
-//                eventModel.addEvent(e);
-//            }
+            if (e.isRepeated()) {
+                for (Event repeated : createRepeatedEvents(e)) {
+                    eventModel.addEvent(repeated);
+                }
+            } else {
+                eventModel.addEvent(e);
+            }
         }
     }
 
@@ -75,51 +74,7 @@ public class CalendarController implements Serializable {
                     + "date ");
         }
         List<Event> days = new ArrayList();
-
-        //Set the initial dates
-        Date startDate = event.getStartDate();
-        Date endDate = event.getEndDate();
-
-        //Create the initial calendar objects
-        Calendar startCal = new GregorianCalendar();
-        Calendar endCal = new GregorianCalendar();
-        startCal.setTime(startDate);
-        System.out.println("HELLO!");
-        endCal.setTime(endDate);
-
-        //Get the end time
-        int endHour = endCal.get(Calendar.HOUR);
-        int endMin = endCal.get(Calendar.MINUTE);
-
-        //Set the endCal to the same date, end time.
-        endCal.setTime(startDate);
-        endCal.set(Calendar.HOUR, endHour);
-        endCal.set(Calendar.MINUTE, endMin);
-
-        //Create a list to hold the repeated events
-        List<String> repeatedDays = event.getRepeatedDays();
-        //Add the first event
-        event.setEndDate(endCal.getTime());
-        days.add(event);
-        int i = 0;
-        Date nextStartDay = new Date();
-        Date nextEndDay = new Date();
-        while (true) {
-            if (i >= repeatedDays.size()) {
-                i = 0;
-            }
-            nextStartDay = findNextDay(startDate, repeatedDays.get(i));
-            nextEndDay = findNextDay(endCal.getTime(), repeatedDays.get(i));
-            days.add(new Event(event.getTitle(), event.getDescription(), nextStartDay, nextEndDay));
-            startCal.setTime(nextStartDay);
-            endCal.setTime(nextEndDay);
-            if (startCal.getTime().getTime() >= endCal.get(Calendar.DAY_OF_YEAR)) {
-                break;
-            }
-
-        }
-
-        return days;
+     return days;
     }
 
     /**

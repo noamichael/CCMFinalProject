@@ -137,7 +137,7 @@ public class DatabaseService {
     }
 
     public void updateEvent(Event event) {
-        Event oldEvent = em.find(Event.class, event.getId());
+        Event oldEvent = em.find(Event.class, event.getPk());
         oldEvent.updateEvent(event);
     }
 
