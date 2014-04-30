@@ -1,13 +1,10 @@
 package org.ccm.webcalendar;
 
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Serializable;
 import java.io.StringWriter;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.enterprise.context.SessionScoped;
+import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.servlet.ServletException;
@@ -17,7 +14,7 @@ import javax.servlet.ServletException;
  * @author Michael Kucinski
  */
 @Named
-@SessionScoped
+@RequestScoped
 public class ErrorController implements Serializable {
 
     private String trace;
@@ -42,21 +39,6 @@ public class ErrorController implements Serializable {
         fillStackTrace(ex, pw);
         trace = writer.toString();
         return trace;
-    }
-
-    public void doCheck() {
-         System.out.println("Checking!");
-        if (trace == null || trace.isEmpty()) {
-            try {
-                FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
-            } catch (IOException e) {
-                Logger.getLogger(ErrorController.class.getName()).log(Level.SEVERE, null, e);
-            }
-
-        }
-        else{
-            trace = null;
-        }
     }
 
     /**

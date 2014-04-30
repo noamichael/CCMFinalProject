@@ -5,23 +5,22 @@
                 template="./WEB-INF/template.xhtml"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:f="http://xmlns.jcp.org/jsf/core">
-    <f:metadata> 
-        <f:event type="preRenderView" listener="#{errorController.doCheck()}" /> 
-    </f:metadata>
 
     <ui:define name="title">#{requestScope['javax.servlet.error.message']}  </ui:define>
     <ui:define name="header">#{requestScope['javax.servlet.error.message']}  </ui:define>
     <ui:define name="sidebar"><!--None!--></ui:define>
     <ui:define name="center">
+        <ui:fragment rendered="#{!errorController.stackTrace.isEmpty()}">
+            <center>
+                The following error has occurred:
 
-        <center>
-            The following error has occurred:
-            <h:form>
                 <b>
                     #{requestScope['javax.servlet.error.message']}  
                 </b>
                 <p />
-                <h:commandButton value="Back" action="/index.xhtml" /> 
+                <h:form>
+                    <h:commandButton value="Back" action="/index.xhtml" /> 
+                </h:form>
                 <p /> 
                 <font color="RED">  
                     <h:outputText value="Please show the system administator the error below." rendered="#{errorController.stackTrace != null}"/> 
@@ -32,8 +31,14 @@
                 </textarea>  
 
                 <p />
-            </h:form>
-        </center>
+
+            </center>
+        </ui:fragment>
+        <ui:fragment rendered="#{errorController.stackTrace.isEmpty()}">
+            <center>
+                No error has occurred.
+            </center>
+        </ui:fragment>
     </ui:define>
 </ui:composition>
 

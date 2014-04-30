@@ -136,6 +136,11 @@ public class DatabaseService {
 
     }
 
+    public void updateEvent(Event event) {
+        Event oldEvent = em.find(Event.class, event.getId());
+        oldEvent.updateEvent(event);
+    }
+
     /**
      * Removes a user from the persistence context.
      *
@@ -148,7 +153,8 @@ public class DatabaseService {
 
     /**
      * Removes an event from the persistence context.
-     * @param event 
+     *
+     * @param event
      */
     public void removeEvent(Event event) {
         Event removed = em.getReference(Event.class, event.getPk());

@@ -27,6 +27,7 @@ public class LoginController implements Serializable {
     private User newUser;
     private boolean loggedIn;
     private Event newEvent;
+    private Event selectedEvent;
 
     /**
      * Registers a user after validation.
@@ -60,10 +61,21 @@ public class LoginController implements Serializable {
 
     /**
      * Ajax action listener to clear repeated events if needed.
+     *
+     * @param type
      */
-    public void repeatedListener() {
-        if (!newEvent.isRepeated() && newEvent.getRepeatedDays() != null) {
-            newEvent.getRepeatedDays().clear();
+    public void repeatedListener(String type) {
+        switch (type) {
+            case "new": {
+                if (!newEvent.isRepeated() && newEvent.getRepeatedDays() != null) {
+                    newEvent.getRepeatedDays().clear();
+                }
+            }
+            case "update": {
+                if (!selectedEvent.isRepeated() && selectedEvent.getRepeatedDays() != null) {
+                    selectedEvent.getRepeatedDays().clear();
+                }
+            }
         }
     }
 
@@ -80,6 +92,15 @@ public class LoginController implements Serializable {
             addMessage("The event could not be added because the user is not logged in.");
         }
 
+    }
+
+    public void editEvent(Event event) {
+        if (getCurrentUser().getUsername() != null) {
+            service.updateEvent(event);
+            addMessage("Event Removed!");
+        } else {
+            addMessage("The event could not be removed.");
+        }
     }
 
     /**
@@ -209,5 +230,19 @@ public class LoginController implements Serializable {
      */
     public void setNewEvent(Event newEvent) {
         this.newEvent = newEvent;
+    }
+
+    /**
+     * @return the selectEvent
+     */
+    public Event getSelectedEvent() {
+        return selectedEvent;
+    }
+
+    /**
+     * @param selectedEvent the selectEvent to set
+     */
+    public void setSelectedEvent(Event selectedEvent) {
+        this.selectedEvent = selectedEvent;
     }
 }

@@ -19,6 +19,7 @@ import org.primefaces.model.ScheduleEvent;
 
 /**
  * An entity which represents an event.
+ *
  * @author Michael Kucinski/Trevor Florio
  */
 @Entity
@@ -66,6 +67,22 @@ public class Event implements Comparable, Serializable, ScheduleEvent {
 
     public Event() {
 
+    }
+
+    public void updateEvent(Event event) {
+        this.pk = event.pk;
+        this.title = event.title;
+        this.description = event.description;
+        this.allDay = event.allDay;
+        this.enabled = event.enabled;
+        this.startDate = event.startDate;
+        this.endDate = event.endDate;
+        this.repeated = event.repeated;
+        this.styleClass = event.styleClass;
+        this.id = event.id;
+        this.repeatedDays = event.repeatedDays;
+        this.location = event.location;
+        this.owner = event.owner;
     }
 
     public Event(String title, String description, Date startDate, Date endDate) {

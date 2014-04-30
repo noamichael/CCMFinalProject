@@ -73,10 +73,96 @@
                             Delete
                         </f:facet>  
                         <h:form>
-                            <h:commandButton action="#{loginController.removeEvent(event)}" value="Delete"/>
+                            <p:commandButton action="#{loginController.removeEvent(event)}" type="submit" value="Delete"/>
+                        </h:form>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            Edit
+                        </f:facet>  
+                        <h:form>
+                            <p:commandButton oncomplete="updateDlg.show();" value="Edit"/>
                         </h:form>
                     </p:column>
                 </p:dataTable> 
+                <p:dialog id="upDialog" widgetVar="updateDlg" header="Update Event">
+                    <h:form>
+                        <h:panelGrid id="update_event" columns="2" style="border: 0px;">
+                            <h:column>
+                                <h:panelGrid style="border: 0px;">
+                                    <h:outputLabel value="Title"/>
+                                    <h:inputText value="#{loginController.selectedEvent.title}" required="true" requiredMessage="Please enter an event name.">
+                                        <p:ajax event="keyup" process="@this"/>
+                                    </h:inputText>
+                                    <br/>
+                                    <h:outputLabel value="Description"/>
+                                    <h:inputTextarea value="#{loginController.selectedEvent.description}" required="true" requiredMessage="Please enter a description.">
+                                        <p:ajax event="keyup" process="@this"/>
+                                    </h:inputTextarea>
+
+                                    <h:outputLabel value="Location"/>
+                                    <h:inputText value="#{loginController.selectedEvent.location}" required="true" requiredMessage="Please enter a location.">
+                                        <p:ajax event="keyup" process="@this"/>
+                                    </h:inputText>
+                                    <h:outputLabel value="Repeated event"/>
+                                    <p:selectBooleanCheckbox value="#{loginController.selectedEvent.repeated}">
+                                        <p:ajax event="change" update="update_event" listener="#{loginController.repeatedListener('update')}"/>
+                                    </p:selectBooleanCheckbox> 
+                                </h:panelGrid>
+                            </h:column>
+                            <h:column>
+                                <h:panelGrid style="border: 0px;">
+                                    <h:outputLabel value="Days repeated" rendered="#{loginController.selectedEvent.repeated}"/>
+
+                                    <p:selectManyCheckbox id="lineDirection" value="#{loginController.selectedEvent.repeatedDays}" layout="grid" columns="3"  rendered="#{loginController.selectedEvent.repeated}">  
+                                        <p:ajax event="change" update="update_event"/>
+                                        <f:selectItem itemLabel="Everyday" itemValue="ALL" />  
+                                    </p:selectManyCheckbox>  
+                                    <p:selectManyCheckbox value="#{loginController.selectedEvent.repeatedDays}" layout="grid" columns="3"  rendered="#{loginController.selectedEvent.repeated and !loginController.selectedEvent.everyDay}">  
+                                        <p:ajax process="@this"/>
+                                        <f:selectItem itemLabel="Monday" itemValue="MON" />  
+                                        <f:selectItem itemLabel="Tuseday" itemValue="TUE" />  
+                                        <f:selectItem itemLabel="Wednesday" itemValue="WED" />
+                                        <f:selectItem itemLabel="Thursday" itemValue="THU" />   
+                                        <f:selectItem itemLabel="Friday" itemValue="FRI" />  
+                                        <f:selectItem itemLabel="Saturday" itemValue="SAT" />  
+                                        <f:selectItem itemLabel="Sunday" itemValue="SUN" />  
+                                    </p:selectManyCheckbox>  
+
+
+                                    <h:outputLabel value="All Day"/>
+                                    <p:selectBooleanCheckbox value="#{loginController.selectedEvent.allDay}">
+                                        <p:ajax event="change" update="update_event"/>
+                                    </p:selectBooleanCheckbox>
+                                    <h:outputLabel value="Start Date" rendered="#{!loginController.selectedEvent.allDay}"/>
+                                    <p:calendar value="#{loginController.selectedEvent.startDate}" rendered="#{!loginController.selectedEvent.allDay}"  pattern="MM/dd/yyyy hh:mm a" required="true" requiredMessage="Please enter a start date.">
+                                        <!-- <f:validator validatorId="eventValidator"/>
+                                         <f:attribute name="end" value="#{end}"/>-->
+                                    </p:calendar>
+
+                                    <h:outputLabel value="End Date" rendered="#{!loginController.selectedEvent.allDay}"/>
+                                    <p:calendar value="#{loginController.selectedEvent.endDate}"  rendered="#{!loginController.selectedEvent.allDay}" pattern="MM/dd/yyyy hh:mm a"/>
+
+                                    <h:outputLabel value="Start Date" rendered="#{loginController.selectedEvent.allDay}"/>
+                                    <p:calendar value="#{loginController.selectedEvent.startDate}"  rendered="#{loginController.selectedEvent.allDay}"  pattern="MM/dd/yyyy" required="true" requiredMessage="Please enter a start date.">
+                                    </p:calendar>
+
+                                    <h:outputLabel value="End Date" rendered="#{loginController.selectedEvent.allDay}"/>
+                                    <p:calendar value="#{loginController.selectedEvent.endDate}" rendered="#{loginController.selectedEvent.allDay}" pattern="MM/dd/yyyy"/>
+
+
+                                    <h:outputLabel value="Priority"/>
+                                    <h:selectOneMenu value="#{loginController.selectedEvent.priority}">
+                                        <f:selectItem itemLabel="High" itemValue="3"/>
+                                        <f:selectItem itemLabel="Medium" itemValue="2"/>
+                                        <f:selectItem itemLabel="Low" itemValue="1"/>
+                                    </h:selectOneMenu>
+                                    <h:commandButton action="#{loginController.editEvent()}"  value="Update Event"/>
+                                </h:panelGrid>
+                            </h:column>
+                        </h:panelGrid>
+                    </h:form>
+                </p:dialog>
             </p:tab>
             <p:tab title="Calendar">
                 <h:form id="cal">
@@ -89,13 +175,6 @@
                 </h:form>
             </p:tab>
         </p:tabView>
-        <h:form>
-            <p:themeSwitcher style="width:165px" effect="fade" id="update_theme">  
-                <f:selectItem itemLabel="Choose Theme" itemValue="home" />  
-                <f:selectItems value="#{themeList}" />  
-                <p:ajax />  
-            </p:themeSwitcher>
-        </h:form>
     </ui:define>
     <ui:define name="west">
         <h:form>
@@ -117,7 +196,7 @@
                     </h:inputText>
                     <h:outputLabel value="Repeated event"/>
                     <p:selectBooleanCheckbox value="#{loginController.newEvent.repeated}">
-                        <p:ajax event="change" update="create_event" listener="#{loginController.repeatedListener()}"/>
+                        <p:ajax event="change" update="create_event" listener="#{loginController.repeatedListener('new')}"/>
                     </p:selectBooleanCheckbox>    
                     <h:outputLabel value="Days repeated" rendered="#{loginController.newEvent.repeated}"/>
 
