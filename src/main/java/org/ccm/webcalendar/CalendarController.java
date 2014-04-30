@@ -18,6 +18,7 @@ import org.primefaces.model.ScheduleModel;
 
 /**
  * A session scoped bean to manage the view's calendar component
+ *
  * @author Michael Kucinski/Trevor Florio
  */
 @Named
@@ -52,6 +53,7 @@ public class CalendarController implements Serializable {
         currentUser = loginController.getCurrentUser();
         currentEvents = service.findEventByUsername(currentUser.getUsername());
         for (Event e : currentEvents) {
+
             if (e.isRepeated()) {
                 for (Event repeated : createRepeatedEvents(e)) {
                     eventModel.addEvent(repeated);
@@ -74,7 +76,36 @@ public class CalendarController implements Serializable {
                     + "date ");
         }
         List<Event> days = new ArrayList();
-     return days;
+
+        //Set the initial dates
+        Date startDate = event.getStartDate();
+        Date endDate = event.getEndDate();
+
+        //Create the initial calendar objects
+        Calendar startCal = new GregorianCalendar();
+        Calendar endCal = new GregorianCalendar();
+        startCal.setTime(startDate);
+        endCal.setTime(endDate);
+
+        long tempTime = startDate.getTime();
+        int tempDay = startCal.get(Calendar.DAY_OF_WEEK);
+
+        while (tempTime <= endDate.getTime()) {
+            if (event.getRepeatedDays().contains(dayIntToString(tempDay))) {
+                Event e = new Event();
+                e.updateEvent(event);
+                e.setRepeated(false);
+                days.add(e);
+            }
+            tempTime += 86400000;
+            if (tempDay != Calendar.SATURDAY) {
+                tempDay += 1;
+            } else {
+                tempDay = Calendar.SUNDAY;
+            }
+        }
+
+        return days;
     }
 
     /**
