@@ -70,7 +70,7 @@
                                 Delete
                             </f:facet>  
                             <h:form>
-                                <p:commandButton action="#{loginController.removeEvent(event)}" type="submit" value="Delete"/>
+                                <p:commandButton action="#{loginController.removeEvent(event)}" update=":tab_containter" type="submit" value="Delete"/>
                             </h:form>
                         </p:column>
                         <p:column>

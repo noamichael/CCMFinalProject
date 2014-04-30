@@ -53,14 +53,14 @@ public class CalendarController implements Serializable {
         currentUser = loginController.getCurrentUser();
         currentEvents = service.findEventByUsername(currentUser.getUsername());
         for (Event e : currentEvents) {
-
-            if (e.isRepeated()) {
-                for (Event repeated : createRepeatedEvents(e)) {
-                    eventModel.addEvent(repeated);
-                }
-            } else {
-                eventModel.addEvent(e);
-            }
+             eventModel.addEvent(e);//remove if the code below is uncommented
+//            if (e.isRepeated()) {
+//                for (Event repeated : createRepeatedEvents(e)) {
+//                    eventModel.addEvent(repeated);
+//                }
+//            } else {
+//                eventModel.addEvent(e);
+//            }
         }
     }
 

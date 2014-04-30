@@ -89,14 +89,16 @@ public class LoginController implements Serializable {
      * Removes an event from the persistence context.
      *
      * @param event The event to remove.
+     * @return null to refresh the view
      */
-    public void removeEvent(Event event) {
+    public String removeEvent(Event event) {
         if (getCurrentUser().getUsername() != null) {
             service.removeEvent(event);
             addMessage("Event Removed!");
         } else {
             addMessage("The event could not be removed.");
         }
+        return null;
     }
 
     /**
